@@ -1,172 +1,415 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Showcase</title>
+    <title>App Lab Showcase</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        outfit: ['Outfit', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* Custom animations for the background blobs */
-        @keyframes blob {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
+        /* Smooth transitions for scaling */
+        #app-frame-container {
+            transform-origin: top left;
+            transition: transform 0.2s ease-out;
         }
-        .animate-blob {
-            animation: blob 7s infinite;
+        #phone-wrapper {
+            transition: width 0.2s ease-out, height 0.2s ease-out;
         }
-        .animation-delay-2000 {
-            animation-delay: 2s;
+        /* Custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-        .animation-delay-4000 {
-            animation-delay: 4s;
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.3);
         }
-
-        /* Responsive scaling with smooth ease-out transitions (no bounce) */
-        .app-container {
-            transition: transform 0.4s ease-out;
-            transform-origin: center center;
+        ::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 9999px;
         }
-
-        /* Scale down based on screen width */
-        @media (max-width: 480px) {
-            .app-container {
-                transform: scale(0.85);
-            }
-        }
-        @media (max-width: 380px) {
-            .app-container {
-                transform: scale(0.75);
-            }
-        }
-
-        /* Scale down based on screen height to prevent cutting off or requiring zoom */
-        @media (max-height: 850px) {
-            .app-container {
-                transform: scale(0.85);
-            }
-        }
-        @media (max-height: 740px) {
-            .app-container {
-                transform: scale(0.72);
-            }
-        }
-        @media (max-height: 640px) {
-            .app-container {
-                transform: scale(0.62);
-            }
-        }
-        
-        /* Smooth, non-bouncy entry animation */
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-        
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.8);
         }
     </style>
 </head>
-<body class="bg-gray-950 min-h-screen flex items-center justify-center overflow-hidden font-sans selection:bg-indigo-500 selection:text-white antialiased text-slate-200 relative">
+<body class="h-full flex flex-col justify-between overflow-hidden font-sans relative">
 
-    <!-- Animated Ambient Background -->
-    <div class="fixed inset-0 w-full h-full z-0 flex items-center justify-center pointer-events-none">
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob"></div>
-        <div class="absolute top-1/3 right-1/4 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-8 left-1/3 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob animation-delay-4000"></div>
+    <!-- Ambient Glowing Background Assets -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-indigo-600/20 blur-[100px] animate-pulse-slow"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-fuchsia-600/10 blur-[120px] animate-pulse-slow"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-violet-600/5 blur-[150px]"></div>
     </div>
 
-    <!-- Main Content -->
-    <main class="relative z-10 flex flex-col items-center justify-center w-full px-4 fade-in-up">
-        
-        <!-- Header / Title -->
-        <div class="mb-6 text-center">
-            <h1 class="text-3xl font-light tracking-tight text-white mb-1">App Showcase</h1>
-            <p class="text-gray-400 text-xs tracking-wide uppercase shadow-sm">Interactive Preview</p>
-        </div>
-
-        <!-- Glassmorphic Device Mockup Container -->
-        <div class="app-container relative group">
-            
-            <!-- Outer Glow -->
-            <div class="absolute -inset-0.5 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-[3.2rem] blur opacity-30 group-hover:opacity-40 transition duration-500"></div>
-            
-            <!-- Device Bezel -->
-            <div class="relative bg-gray-900 border-[12px] border-gray-900 rounded-[3rem] shadow-2xl ring-1 ring-white/10 flex flex-col items-center justify-center">
-                
-                <!-- Notch / Camera Hole -->
-                <div class="absolute top-0 inset-x-0 h-7 flex justify-center z-20 pointer-events-none">
-                    <div class="w-36 h-7 bg-gray-900 rounded-b-3xl relative flex items-center justify-center shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
-                        <div class="w-16 h-1.5 bg-gray-800 rounded-full"></div>
-                        <div class="w-2 h-2 bg-blue-900/50 rounded-full absolute right-4 shadow-[inset_0_1px_2px_rgba(0,0,0,0.8)] border border-gray-800/50"></div>
-                    </div>
-                </div>
-
-                <!-- Iframe Wrapper -->
-                <div class="w-[392px] h-[620px] bg-white rounded-[2.2rem] overflow-hidden flex items-center justify-center relative shadow-inner">
-                    
-                    <!-- Loading Skeleton (Fades smoothly without bouncing) -->
-                    <div id="loading-state" class="absolute inset-0 bg-gray-950 flex flex-col items-center justify-center z-0 transition-opacity duration-300">
-                        <div class="w-10 h-10 border-4 border-slate-800 border-t-indigo-500 rounded-full animate-spin mb-4"></div>
-                        <p class="text-gray-400 text-sm font-medium">Loading Experience...</p>
-                    </div>
-
-                    <!-- The Embedded App -->
-                    <iframe 
-                        id="app-iframe"
-                        width="392" 
-                        height="620" 
-                        style="border: 0px; background: transparent; position: relative; z-index: 10;" 
-                        src="https://studio.code.org/projects/applab/zF6j96E2-181N-289q-qE9z-9Fb8T9b96jEq/embed?nosource"
-                        title="Embedded AppLab Project"
-                        allow="camera; microphone"
-                        onload="document.getElementById('loading-state').style.opacity = '0'; setTimeout(() => document.getElementById('loading-state').style.display = 'none', 300);">
-                    </iframe>
-                </div>
-
-                <!-- Home Indicator (Bottom Bar) -->
-                <div class="absolute bottom-2 inset-x-0 h-4 flex justify-center z-20 pointer-events-none">
-                    <div class="w-32 h-1.5 bg-gray-600/50 rounded-full backdrop-blur-sm"></div>
-                </div>
-                
+    <!-- Header Block -->
+    <header class="w-full px-6 py-4 border-b border-slate-800/60 bg-slate-900/40 backdrop-blur-md flex flex-wrap justify-between items-center gap-4 z-10">
+        <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                <!-- Sparkle/App Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-white">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 21l8.982-11.825a.9.9 0 0 0-.615-1.496H14.505l.773-6h-4.96L8.232 12h5.132l-3.551 3.904Z" />
+                </svg>
+            </div>
+            <div>
+                <h1 class="font-outfit font-bold text-xl tracking-wide bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">App Lab Sandbox</h1>
+                <p class="text-xs text-indigo-300/80 font-medium flex items-center gap-1">
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Live Preview • Hosted on GitHub
+                </p>
             </div>
         </div>
+
+        <!-- Quick Info Panels -->
+        <div class="flex items-center gap-3">
+            <button id="btn-info" class="px-4 py-2 text-sm bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/50 rounded-xl transition-all duration-200 flex items-center gap-2 hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4 text-indigo-400">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 1 1 1.063 1.063L12 13.504V18a.75.75 0 0 1-1.5 0V11.25ZM12 7.605a.825.825 0 1 1 0-1.65.825.825 0 0 1 0 1.65Z" />
+                </svg>
+                About App
+            </button>
+            <button id="btn-share" class="px-4 py-2 text-sm bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 rounded-xl font-medium transition-all duration-200 shadow-md shadow-indigo-600/20 flex items-center gap-2 hover:shadow-lg hover:shadow-indigo-500/30">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+                </svg>
+                Share Link
+            </button>
+        </div>
+    </header>
+
+    <!-- Main App Container Area -->
+    <main class="flex-1 flex flex-col md:flex-row items-center justify-center p-4 md:p-8 gap-8 relative overflow-hidden">
         
+        <!-- Interactive Control Bar (Left Side) -->
+        <div class="hidden md:flex flex-col gap-3 bg-slate-900/60 backdrop-blur-md p-3 border border-slate-800/80 rounded-2xl z-10 shadow-xl">
+            <!-- Refresh App Button -->
+            <button id="btn-refresh" class="p-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group" title="Refresh Application">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5 group-hover:rotate-180 transition-transform duration-300">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>
+            </button>
+            <!-- Toggle Ambient Background -->
+            <button id="btn-lights" class="p-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all" title="Toggle Ambience">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1.5m0 15V21m-9-9h1.5m15 0H21m-1.5-6.364-1.06 1.06m-11.314 11.314-1.061 1.061m1.06-11.314 1.06 1.06m11.314 11.314 1.061-1.061M12 7.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Z" />
+                </svg>
+            </button>
+            <!-- Info Icon -->
+            <button id="btn-info-sm" class="p-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all" title="Quick Help">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Phone Shell Container -->
+        <div class="relative flex items-center justify-center z-10 select-none">
+            
+            <!-- Glow background directly behind phone -->
+            <div id="phone-glow" class="absolute inset-0 bg-indigo-500/25 blur-3xl rounded-full scale-75 opacity-70 transition-opacity duration-300"></div>
+            
+            <!-- Real Smartphone Mockup wrapper -->
+            <div id="phone-wrapper" class="relative bg-slate-900 border-[10px] border-slate-800 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] rounded-[48px] overflow-hidden flex items-center justify-center">
+                
+                <!-- Front Camera / Speaker Notch -->
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-800 rounded-b-2xl z-50 flex items-center justify-center gap-1.5 px-3">
+                    <div class="w-2.5 h-2.5 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center">
+                        <div class="w-1 h-1 rounded-full bg-blue-900"></div>
+                    </div>
+                    <div class="w-8 h-1 rounded-full bg-slate-950"></div>
+                </div>
+
+                <!-- App container scaled using JavaScript -->
+                <div id="app-frame-container" class="absolute top-0 left-0 w-[392px] h-[620px]">
+                    <iframe id="app-iframe" width="392" height="620" style="border: 0px;" src="https://studio.code.org/projects/applab/zF6j96E2-181N-289q-qE9z-9Fb8T9b96jEq/embed?nosource" allow="geolocation; microphone; camera; midi"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Info & Controls (Right Side on Desktop / Bottom on Mobile) -->
+        <div class="w-full max-w-sm flex flex-col gap-4 z-10 md:self-center">
+            
+            <!-- Mobile quick action toolbar (hidden on desktop) -->
+            <div class="flex md:hidden justify-center items-center gap-4 bg-slate-900/60 border border-slate-800/80 p-2.5 rounded-2xl w-full">
+                <button id="btn-refresh-mob" class="flex-1 py-2 px-3 bg-slate-800/50 hover:bg-slate-800 rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-indigo-400">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                    </svg>
+                    Refresh
+                </button>
+                <div class="w-[1px] h-6 bg-slate-800"></div>
+                <button id="btn-lights-mob" class="flex-1 py-2 px-3 bg-slate-800/50 hover:bg-slate-800 rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-amber-400">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1.5m0 15V21m-9-9h1.5m15 0H21m-1.5-6.364-1.06 1.06m-11.314 11.314-1.061 1.061m1.06-11.314 1.06 1.06m11.314 11.314 1.061-1.061M12 7.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Z" />
+                    </svg>
+                    Lights
+                </button>
+            </div>
+
+            <!-- Dashboard Card -->
+            <div class="bg-slate-900/60 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-lg relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-xl pointer-events-none group-hover:bg-indigo-500/10 transition-colors duration-300"></div>
+                
+                <h3 class="font-outfit font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4 text-violet-400">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+                    </svg>
+                    App Engine Specs
+                </h3>
+                <p class="text-sm text-slate-400 leading-relaxed mb-4">
+                    This frame features intelligent visual scaling. The embed retains original layout fidelity and runs completely fluid on all standard browser configurations.
+                </p>
+                
+                <div class="grid grid-cols-2 gap-2 text-xs text-slate-400 font-medium">
+                    <div class="bg-slate-950/40 border border-slate-800/50 p-2.5 rounded-xl">
+                        <span class="block text-[10px] text-indigo-400 uppercase tracking-wide">Width Mode</span>
+                        Responsive Scale
+                    </div>
+                    <div class="bg-slate-950/40 border border-slate-800/50 p-2.5 rounded-xl">
+                        <span class="block text-[10px] text-indigo-400 uppercase tracking-wide">Aspect Ratio</span>
+                        392 × 620 px
+                    </div>
+                </div>
+            </div>
+
+            <!-- Embed Details Quick Accordion -->
+            <div class="bg-slate-900/40 backdrop-blur-sm border border-slate-800/40 rounded-2xl p-4 text-xs text-slate-500 flex justify-between items-center gap-4">
+                <span>Designed for mobile, scaled for desktop.</span>
+                <span class="px-2 py-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-semibold rounded-md uppercase tracking-wider text-[9px]">
+                    v1.2.0
+                </span>
+            </div>
+        </div>
     </main>
 
+    <!-- Footer Block -->
+    <footer class="w-full text-center py-4 border-t border-slate-900 bg-slate-950/80 text-xs text-slate-500 flex flex-col sm:flex-row justify-between items-center px-6 gap-2 z-10">
+        <div>
+            Built with ⚡ & HTML/Tailwind CSS
+        </div>
+        <div>
+            Project source hosted natively inside <a href="https://studio.code.org" target="_blank" class="text-indigo-400 hover:underline">Code.org App Lab</a>
+        </div>
+    </footer>
+
+    <!-- ABOUT/HELP MODAL -->
+    <div id="modal-info" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-all duration-300 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl relative">
+            <button id="modal-close" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <h2 class="font-outfit font-bold text-2xl mb-4 bg-gradient-to-r from-white to-indigo-300 bg-clip-text text-transparent">
+                About this Application
+            </h2>
+            <div class="space-y-3 text-slate-300 text-sm">
+                <p>
+                    This portal embeds a mobile web application built inside the <strong>Code.org App Lab environment</strong>. 
+                </p>
+                <p>
+                    The host template acts as a viewport wrapper, securing the original resolution aspects, supporting safe mouse clicks, touches, and maintaining visual alignment regardless of device viewport changes.
+                </p>
+                <div class="border-t border-slate-800/80 pt-3 mt-4">
+                    <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Technical Environment</h4>
+                    <ul class="space-y-1 text-xs text-indigo-300">
+                        <li>• Framework: Pure HTML, Tailwind CSS, JavaScript</li>
+                        <li>• Embed Option: Embedded (nosource) Mode</li>
+                        <li>• Hosting Target: GitHub Pages</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <button id="modal-ok" class="mt-6 w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-xl transition-all shadow-md shadow-indigo-600/10">
+                Acknowledge
+            </button>
+        </div>
+    </div>
+
+    <!-- TOAST ALERT PANEL -->
+    <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 pointer-events-none bg-emerald-600 border border-emerald-500/50 text-white px-5 py-3 rounded-xl shadow-lg shadow-emerald-600/10 transition-all duration-300 flex items-center gap-3 z-50 font-medium text-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 text-white animate-bounce">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+        <span id="toast-message">Action successful!</span>
+    </div>
+
+    <!-- JavaScript Scaling & Controls -->
     <script>
-        const container = document.querySelector('.app-container');
+        const appFrameContainer = document.getElementById('app-frame-container');
+        const phoneWrapper = document.getElementById('phone-wrapper');
+        const iframe = document.getElementById('app-iframe');
+        const phoneGlow = document.getElementById('phone-glow');
+
+        // Original sizing target specs
+        const targetWidth = 392;
+        const targetHeight = 620;
+
+        /**
+         * Calculates and applies scale transform to keep the iframe fitting on tiny viewports
+         */
+        function resizeAppShell() {
+            // Margin clearance to make sure shell has spacing on screens
+            const verticalPadding = window.innerWidth < 768 ? 160 : 180;
+            const horizontalPadding = window.innerWidth < 768 ? 32 : 64;
+
+            const availWidth = window.innerWidth - horizontalPadding;
+            const availHeight = window.innerHeight - verticalPadding;
+
+            // Compute ideal scale factor
+            const scaleX = availWidth / targetWidth;
+            const scaleY = availHeight / targetHeight;
+            
+            // Limit max scale to 1.00 for best asset resolution
+            let finalScale = Math.min(scaleX, scaleY);
+            if (finalScale > 1) {
+                finalScale = 1;
+            }
+
+            // Apply CSS transformations
+            appFrameContainer.style.transform = `scale(${finalScale})`;
+            
+            // Constrain wrapper to match scaled footprint
+            const calculatedWidth = targetWidth * finalScale;
+            const calculatedHeight = targetHeight * finalScale;
+            
+            phoneWrapper.style.width = `${calculatedWidth}px`;
+            phoneWrapper.style.height = `${calculatedHeight}px`;
+
+            // Adjust glow size to frame size
+            if (phoneGlow) {
+                phoneGlow.style.width = `${calculatedWidth * 1.1}px`;
+                phoneGlow.style.height = `${calculatedHeight * 1.1}px`;
+            }
+        }
+
+        // Attach listeners
+        window.addEventListener('resize', resizeAppShell);
+        window.addEventListener('DOMContentLoaded', resizeAppShell);
+        // Execute immediately
+        resizeAppShell();
+
+        // Control Actions
         
-        container.addEventListener('mousemove', (e) => {
-            if (window.innerWidth < 768) return;
+        // Refresh Buttons
+        const refreshHandler = () => {
+            const currentSrc = iframe.src;
+            iframe.src = '';
+            iframe.src = currentSrc;
+            showToast("Application view refreshed!");
+        };
+        document.getElementById('btn-refresh').addEventListener('click', refreshHandler);
+        document.getElementById('btn-refresh-mob').addEventListener('click', refreshHandler);
+
+        // Ambience Toggle (Lights Out Mode)
+        let glowEnabled = true;
+        const lightsHandler = () => {
+            glowEnabled = !glowEnabled;
+            if (glowEnabled) {
+                phoneGlow.classList.remove('opacity-0');
+                phoneGlow.classList.add('opacity-70');
+                showToast("Ambient glow enabled");
+            } else {
+                phoneGlow.classList.add('opacity-0');
+                phoneGlow.classList.remove('opacity-70');
+                showToast("Ambient glow disabled");
+            }
+        };
+        document.getElementById('btn-lights').addEventListener('click', lightsHandler);
+        document.getElementById('btn-lights-mob').addEventListener('click', lightsHandler);
+
+        // Info Modal
+        const infoModal = document.getElementById('modal-info');
+        const openModal = () => {
+            infoModal.classList.remove('hidden');
+            setTimeout(() => {
+                infoModal.classList.remove('opacity-0', 'pointer-events-none');
+            }, 10);
+        };
+        const closeModal = () => {
+            infoModal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                infoModal.classList.add('hidden');
+            }, 300);
+        };
+        
+        document.getElementById('btn-info').addEventListener('click', openModal);
+        document.getElementById('btn-info-sm').addEventListener('click', openModal);
+        document.getElementById('modal-close').addEventListener('click', closeModal);
+        document.getElementById('modal-ok').addEventListener('click', closeModal);
+        
+        // Share Button (Robust Clipboard fallback mechanism)
+        document.getElementById('btn-share').addEventListener('click', () => {
+            const shareUrl = window.location.href;
             
-            const rect = container.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            // Subtle rotation limits (max 3 degrees)
-            const rotateX = ((y - centerY) / centerY) * -3; 
-            const rotateY = ((x - centerX) / centerX) * 3;
-            
-            // Speed up response slightly during mouse movement for high-performance feel
-            container.style.transition = 'transform 0.1s ease-out';
-            container.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+            // Try standard clipboard API
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(shareUrl)
+                    .then(() => showToast("Share Link copied to Clipboard!"))
+                    .catch(() => fallbackCopy(shareUrl));
+            } else {
+                fallbackCopy(shareUrl);
+            }
         });
 
-        container.addEventListener('mouseleave', () => {
-            // Smoothly ease back to default without bounce
-            container.style.transition = 'transform 0.4s ease-out';
-            container.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-        });
+        function fallbackCopy(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";  // Avoid scrolling to bottom
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast("Share Link copied to Clipboard!");
+                } else {
+                    showToast("Failed to copy link. Please copy URL manually.");
+                }
+            } catch (err) {
+                showToast("Copy error. Copy URL from address bar.");
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Custom Toast Engine
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            
+            toastMsg.innerText = message;
+            
+            // Bring into view
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            // Out of view after timeout
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3000);
+        }
     </script>
 </body>
 </html>
