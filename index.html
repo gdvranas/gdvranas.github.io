@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom animations for the background blobs */
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+
+        /* Responsive scaling for small screens */
+        .app-container {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @media (max-width: 450px) {
+            .app-container {
+                transform: scale(0.85);
+            }
+        }
+        @media (max-width: 380px) {
+            .app-container {
+                transform: scale(0.75);
+            }
+        }
+        
+        /* Smooth entrance */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-950 min-h-screen flex items-center justify-center overflow-hidden font-sans selection:bg-indigo-500 selection:text-white antialiased text-slate-200 relative">
+
+    <!-- Animated Ambient Background -->
+    <div class="fixed inset-0 w-full h-full z-0 flex items-center justify-center pointer-events-none">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob"></div>
+        <div class="absolute top-1/3 right-1/4 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-1/3 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob animation-delay-4000"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 flex flex-col items-center justify-center w-full px-4 fade-in-up">
+        
+        <!-- Header / Title -->
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl font-light tracking-tight text-white mb-2">App Showcase</h1>
+            <p class="text-gray-400 text-sm tracking-wide uppercase shadow-sm">Interactive Preview</p>
+        </div>
+
+        <!-- Glassmorphic Device Mockup Container -->
+        <div class="app-container relative group">
+            
+            <!-- Outer Glow -->
+            <div class="absolute -inset-0.5 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-[3.2rem] blur opacity-30 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+            
+            <!-- Device Bezel -->
+            <div class="relative bg-gray-900 border-[12px] border-gray-900 rounded-[3rem] shadow-2xl ring-1 ring-white/10 flex flex-col items-center justify-center">
+                
+                <!-- Notch / Camera Hole -->
+                <div class="absolute top-0 inset-x-0 h-7 flex justify-center z-20 pointer-events-none">
+                    <div class="w-36 h-7 bg-gray-900 rounded-b-3xl relative flex items-center justify-center shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+                        <div class="w-16 h-1.5 bg-gray-800 rounded-full"></div>
+                        <div class="w-2 h-2 bg-blue-900/50 rounded-full absolute right-4 shadow-[inset_0_1px_2px_rgba(0,0,0,0.8)] border border-gray-800/50"></div>
+                    </div>
+                </div>
+
+                <!-- Iframe Wrapper -->
+                <div class="w-[392px] h-[620px] bg-white rounded-[2.2rem] overflow-hidden flex items-center justify-center relative shadow-inner">
+                    
+                    <!-- Loading Skeleton (Shows briefly before iframe loads) -->
+                    <div id="loading-state" class="absolute inset-0 bg-gray-100 flex flex-col items-center justify-center z-0 transition-opacity duration-500">
+                        <div class="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-4"></div>
+                        <p class="text-gray-500 text-sm font-medium">Loading Experience...</p>
+                    </div>
+
+                    <!-- The Embedded App -->
+                    <iframe 
+                        id="app-iframe"
+                        width="392" 
+                        height="620" 
+                        style="border: 0px; background: transparent; position: relative; z-index: 10;" 
+                        src="https://studio.code.org/projects/applab/zF6j96E2-181N-289q-qE9z-9Fb8T9b96jEq/embed?nosource"
+                        title="Embedded AppLab Project"
+                        allow="camera; microphone"
+                        onload="document.getElementById('loading-state').style.opacity = '0'; setTimeout(() => document.getElementById('loading-state').style.display = 'none', 500);">
+                    </iframe>
+                </div>
+
+                <!-- Home Indicator (Bottom Bar) -->
+                <div class="absolute bottom-2 inset-x-0 h-4 flex justify-center z-20 pointer-events-none">
+                    <div class="w-32 h-1.5 bg-gray-600/50 rounded-full backdrop-blur-sm"></div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </main>
+
+    <script>
+        // Optional JS to add 3D tilt effect on desktop for extra flair
+        const container = document.querySelector('.app-container');
+        
+        container.addEventListener('mousemove', (e) => {
+            // Only apply on larger screens where mouse is used
+            if (window.innerWidth < 768) return;
+            
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -4; // Max 4 deg rotation
+            const rotateY = ((x - centerX) / centerX) * 4;
+            
+            container.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+
+        container.addEventListener('mouseleave', () => {
+            container.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        });
+    </script>
+</body>
+</html>
