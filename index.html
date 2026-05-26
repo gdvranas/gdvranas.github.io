@@ -23,11 +23,14 @@
             animation-delay: 4s;
         }
 
-        /* Responsive scaling for small screens */
+        /* Responsive scaling with smooth ease-out transitions (no bounce) */
         .app-container {
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.4s ease-out;
+            transform-origin: center center;
         }
-        @media (max-width: 450px) {
+
+        /* Scale down based on screen width */
+        @media (max-width: 480px) {
             .app-container {
                 transform: scale(0.85);
             }
@@ -37,18 +40,35 @@
                 transform: scale(0.75);
             }
         }
+
+        /* Scale down based on screen height to prevent cutting off or requiring zoom */
+        @media (max-height: 850px) {
+            .app-container {
+                transform: scale(0.85);
+            }
+        }
+        @media (max-height: 740px) {
+            .app-container {
+                transform: scale(0.72);
+            }
+        }
+        @media (max-height: 640px) {
+            .app-container {
+                transform: scale(0.62);
+            }
+        }
         
-        /* Smooth entrance */
+        /* Smooth, non-bouncy entry animation */
         .fade-in-up {
             opacity: 0;
-            transform: translateY(30px) scale(0.95);
-            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out forwards;
         }
         
         @keyframes fadeInUp {
             to {
                 opacity: 1;
-                transform: translateY(0) scale(1);
+                transform: translateY(0);
             }
         }
     </style>
@@ -66,16 +86,16 @@
     <main class="relative z-10 flex flex-col items-center justify-center w-full px-4 fade-in-up">
         
         <!-- Header / Title -->
-        <div class="mb-8 text-center">
-            <h1 class="text-3xl font-light tracking-tight text-white mb-2">App Showcase</h1>
-            <p class="text-gray-400 text-sm tracking-wide uppercase shadow-sm">Interactive Preview</p>
+        <div class="mb-6 text-center">
+            <h1 class="text-3xl font-light tracking-tight text-white mb-1">App Showcase</h1>
+            <p class="text-gray-400 text-xs tracking-wide uppercase shadow-sm">Interactive Preview</p>
         </div>
 
         <!-- Glassmorphic Device Mockup Container -->
         <div class="app-container relative group">
             
             <!-- Outer Glow -->
-            <div class="absolute -inset-0.5 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-[3.2rem] blur opacity-30 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+            <div class="absolute -inset-0.5 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-[3.2rem] blur opacity-30 group-hover:opacity-40 transition duration-500"></div>
             
             <!-- Device Bezel -->
             <div class="relative bg-gray-900 border-[12px] border-gray-900 rounded-[3rem] shadow-2xl ring-1 ring-white/10 flex flex-col items-center justify-center">
@@ -91,10 +111,10 @@
                 <!-- Iframe Wrapper -->
                 <div class="w-[392px] h-[620px] bg-white rounded-[2.2rem] overflow-hidden flex items-center justify-center relative shadow-inner">
                     
-                    <!-- Loading Skeleton (Shows briefly before iframe loads) -->
-                    <div id="loading-state" class="absolute inset-0 bg-gray-100 flex flex-col items-center justify-center z-0 transition-opacity duration-500">
-                        <div class="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-4"></div>
-                        <p class="text-gray-500 text-sm font-medium">Loading Experience...</p>
+                    <!-- Loading Skeleton (Fades smoothly without bouncing) -->
+                    <div id="loading-state" class="absolute inset-0 bg-gray-950 flex flex-col items-center justify-center z-0 transition-opacity duration-300">
+                        <div class="w-10 h-10 border-4 border-slate-800 border-t-indigo-500 rounded-full animate-spin mb-4"></div>
+                        <p class="text-gray-400 text-sm font-medium">Loading Experience...</p>
                     </div>
 
                     <!-- The Embedded App -->
@@ -106,7 +126,7 @@
                         src="https://studio.code.org/projects/applab/zF6j96E2-181N-289q-qE9z-9Fb8T9b96jEq/embed?nosource"
                         title="Embedded AppLab Project"
                         allow="camera; microphone"
-                        onload="document.getElementById('loading-state').style.opacity = '0'; setTimeout(() => document.getElementById('loading-state').style.display = 'none', 500);">
+                        onload="document.getElementById('loading-state').style.opacity = '0'; setTimeout(() => document.getElementById('loading-state').style.display = 'none', 300);">
                     </iframe>
                 </div>
 
@@ -121,11 +141,9 @@
     </main>
 
     <script>
-        // Optional JS to add 3D tilt effect on desktop for extra flair
         const container = document.querySelector('.app-container');
         
         container.addEventListener('mousemove', (e) => {
-            // Only apply on larger screens where mouse is used
             if (window.innerWidth < 768) return;
             
             const rect = container.getBoundingClientRect();
@@ -135,13 +153,18 @@
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
             
-            const rotateX = ((y - centerY) / centerY) * -4; // Max 4 deg rotation
-            const rotateY = ((x - centerX) / centerX) * 4;
+            // Subtle rotation limits (max 3 degrees)
+            const rotateX = ((y - centerY) / centerY) * -3; 
+            const rotateY = ((x - centerX) / centerX) * 3;
             
-            container.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            // Speed up response slightly during mouse movement for high-performance feel
+            container.style.transition = 'transform 0.1s ease-out';
+            container.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
         });
 
         container.addEventListener('mouseleave', () => {
+            // Smoothly ease back to default without bounce
+            container.style.transition = 'transform 0.4s ease-out';
             container.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
         });
     </script>
