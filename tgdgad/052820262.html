@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Behind the Scenes: Code & Mechanics Audit — GAD vs. TGD</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #f5f2ed;
+    --bg2: #edeae3;
+    --bg3: #e4e0d8;
+    --panel: #ffffff;
+    --border: #d8d3c8;
+    --border2: #c8c2b5;
+    --ink: #1a1714;
+    --ink2: #3d3830;
+    --muted: #8a8278;
+    --accent: #b5460f;
+    --accent2: #1a5c3a;
+    --tgd: #1a5c3a;
+    --gad: #b5460f;
+    --code-bg: #1e1c18;
+    --code-text: #d4c9a8;
+    --code-key: #e8a44a;
+    --code-str: #8fc99e;
+    --code-comment: #6a7a6a;
+    --win: #1a5c3a;
+    --lose: #b5460f;
+    --tag-tgd-bg: rgba(26,92,58,0.08);
+    --tag-tgd-border: rgba(26,92,58,0.2);
+    --tag-gad-bg: rgba(181,70,15,0.08);
+    --tag-gad-border: rgba(181,70,15,0.2);
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+background: var(–bg);
+color: var(–ink);
+font-family: ‘Outfit’, sans-serif;
+font-size: 15px;
+line-height: 1.7;
+}
+
+/* –– SIDEBAR –– */
+.sidebar {
+position: fixed;
+left: 0;
+top: 0;
+width: 270px;
+height: 100vh;
+background: var(–panel);
+border-right: 1px solid var(–border);
+overflow-y: auto;
+z-index: 100;
+padding: 0;
+}
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(–border); border-radius: 2px; }
+
+.sidebar-header {
+background: var(–code-bg);
+padding: 28px 24px;
+border-bottom: 3px solid var(–accent);
+}
+
+.sidebar-header .eyebrow {
+font-family: ‘Space Mono’, monospace;
+font-size: 9px;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: var(–code-str);
+margin-bottom: 8px;
+}
+
+.sidebar-header h2 {
+font-family: ‘Playfair Display’, serif;
+font-size: 16px;
+color: #f0ece3;
+line-height: 1.35;
+font-weight: 600;
+}
+
+.sidebar-body {
+padding: 20px 0;
+}
+
+.nav-group {
+margin-bottom: 8px;
+padding: 0 16px;
+}
+
+.nav-group-label {
+font-family: ‘Space Mono’, monospace;
+font-size: 8.5px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–muted);
+padding: 8px 4px 6px;
+display: block;
+border-top: 1px solid var(–border);
+margin-bottom: 4px;
+}
+
+.nav-group:first-child .nav-group-label { border-top: none; }
+
+.nav-link {
+display: block;
+padding: 6px 8px;
+font-size: 12px;
+color: var(–ink2);
+text-decoration: none;
+border-radius: 5px;
+transition: all 0.18s;
+font-family: ‘Outfit’, sans-serif;
+font-weight: 400;
+line-height: 1.4;
+}
+
+.nav-link:hover {
+background: var(–bg2);
+color: var(–ink);
+}
+
+.nav-link.highlight-tgd {
+color: var(–tgd);
+font-weight: 600;
+}
+
+.nav-link.highlight-gad {
+color: var(–gad);
+font-weight: 600;
+}
+
+.nav-link.sub {
+padding-left: 18px;
+font-size: 11.5px;
+color: var(–muted);
+}
+
+.nav-link.sub:hover { color: var(–ink2); }
+
+/* –– MAIN –– */
+.main {
+margin-left: 270px;
+min-height: 100vh;
+}
+
+/* –– HERO –– */
+.hero {
+background: var(–code-bg);
+padding: 60px 72px 52px;
+position: relative;
+overflow: hidden;
+}
+
+.hero::after {
+content: ‘</>’;
+position: absolute;
+right: 40px;
+bottom: -30px;
+font-family: ‘Space Mono’, monospace;
+font-size: 160px;
+color: rgba(255,255,255,0.03);
+pointer-events: none;
+line-height: 1;
+}
+
+.hero-eyebrow {
+font-family: ‘Space Mono’, monospace;
+font-size: 10px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–code-str);
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.hero-eyebrow::before {
+content: ’// ’;
+color: var(–code-comment);
+}
+
+.hero h1 {
+font-family: ‘Playfair Display’, serif;
+font-size: 40px;
+font-weight: 700;
+color: #f0ece3;
+max-width: 660px;
+line-height: 1.2;
+margin-bottom: 16px;
+}
+
+.hero h1 em {
+font-style: italic;
+color: var(–code-key);
+}
+
+.hero-sub {
+font-family: ‘Space Mono’, monospace;
+font-size: 11px;
+color: var(–code-comment);
+margin-top: 18px;
+}
+
+.hero-pills {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin-top: 24px;
+}
+
+.hero-pill {
+font-family: ‘Space Mono’, monospace;
+font-size: 9px;
+padding: 4px 12px;
+border-radius: 3px;
+letter-spacing: 0.08em;
+}
+
+.hero-pill.green { background: rgba(143,201,158,0.12); color: var(–code-str); border: 1px solid rgba(143,201,158,0.2); }
+.hero-pill.amber { background: rgba(232,164,74,0.12); color: var(–code-key); border: 1px solid rgba(232,164,74,0.2); }
+.hero-pill.gray { background: rgba(255,255,255,0.05); color: #888; border: 1px solid rgba(255,255,255,0.1); }
+
+/* –– CONTENT AREA –– */
+.content {
+padding: 0 72px 80px;
+max-width: 960px;
+}
+
+/* –– PLATFORM SECTION HEADER –– */
+.platform-section-header {
+padding: 48px 0 28px;
+border-bottom: 2px solid var(–border);
+margin-bottom: 36px;
+display: flex;
+align-items: flex-start;
+gap: 20px;
+}
+
+.platform-section-badge {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+font-family: ‘Space Mono’, monospace;
+font-size: 10px;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+padding: 6px 14px;
+border-radius: 4px;
+font-weight: 700;
+flex-shrink: 0;
+margin-top: 6px;
+}
+
+.platform-section-badge.tgd {
+background: var(–tag-tgd-bg);
+border: 1px solid var(–tag-tgd-border);
+color: var(–tgd);
+}
+
+.platform-section-badge.gad {
+background: var(–tag-gad-bg);
+border: 1px solid var(–tag-gad-border);
+color: var(–gad);
+}
+
+.platform-section-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 26px;
+font-weight: 700;
+color: var(–ink);
+line-height: 1.25;
+}
+
+/* –– ENTRY CARDS –– */
+.entry-card {
+background: var(–panel);
+border: 1px solid var(–border);
+border-radius: 10px;
+margin-bottom: 24px;
+overflow: hidden;
+transition: box-shadow 0.2s;
+}
+
+.entry-card:hover {
+box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+}
+
+.entry-card-header {
+padding: 16px 24px;
+border-bottom: 1px solid var(–border);
+display: flex;
+align-items: center;
+gap: 14px;
+}
+
+.entry-num {
+font-family: ‘Space Mono’, monospace;
+font-size: 10px;
+font-weight: 700;
+color: var(–muted);
+background: var(–bg2);
+border: 1px solid var(–border);
+border-radius: 4px;
+padding: 2px 8px;
+flex-shrink: 0;
+}
+
+.entry-title {
+font-family: ‘Outfit’, sans-serif;
+font-size: 14px;
+font-weight: 600;
+color: var(–ink);
+}
+
+.entry-card-body {
+padding: 0;
+}
+
+/* CODE BLOCK */
+.code-block {
+background: var(–code-bg);
+padding: 18px 24px;
+font-family: ‘Space Mono’, monospace;
+font-size: 11.5px;
+line-height: 1.65;
+color: var(–code-text);
+overflow-x: auto;
+border-bottom: 1px solid #2a2820;
+position: relative;
+}
+
+.code-block::before {
+content: attr(data-lang);
+position: absolute;
+top: 10px;
+right: 16px;
+font-size: 9px;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(–code-comment);
+opacity: 0.7;
+}
+
+.code-block .kw { color: var(–code-key); }
+.code-block .str { color: var(–code-str); }
+.code-block .cmt { color: var(–code-comment); font-style: italic; }
+.code-block .fn { color: #a8c8e8; }
+.code-block .num { color: #c8a8e8; }
+
+/* WHAT / BENEFIT / IMPACT */
+.info-section {
+padding: 18px 24px;
+border-bottom: 1px solid rgba(216,211,200,0.5);
+}
+
+.info-section:last-child { border-bottom: none; }
+
+.info-label {
+font-family: ‘Space Mono’, monospace;
+font-size: 8.5px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+margin-bottom: 8px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.info-label::after {
+content: ‘’;
+flex: 1;
+height: 1px;
+background: var(–border);
+}
+
+.info-label.whats-happening { color: var(–muted); }
+.info-label.benefit { color: var(–tgd); }
+.info-label.impact { color: var(–gad); }
+.info-label.detriment { color: var(–gad); }
+
+.info-text {
+font-size: 13.5px;
+color: var(–ink2);
+line-height: 1.7;
+}
+
+/* DETRIMENT CARDS */
+.detriment-header {
+padding: 16px 24px;
+border-bottom: 1px solid var(–border);
+display: flex;
+align-items: center;
+gap: 14px;
+background: rgba(181,70,15,0.03);
+}
+
+.detriment-tag {
+font-family: ‘Space Mono’, monospace;
+font-size: 9px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+background: var(–tag-gad-bg);
+border: 1px solid var(–tag-gad-border);
+color: var(–gad);
+padding: 3px 9px;
+border-radius: 3px;
+font-weight: 700;
+}
+
+.detriment-title {
+font-family: ‘Outfit’, sans-serif;
+font-size: 14px;
+font-weight: 600;
+color: var(–ink);
+}
+
+/* DIVIDER */
+.divider {
+border: none;
+border-top: 2px solid var(–border);
+margin: 50px 0 40px;
+}
+
+/* SUMMARY SECTION */
+.summary-section {
+background: var(–code-bg);
+border-radius: 14px;
+padding: 40px 44px;
+margin-top: 40px;
+position: relative;
+overflow: hidden;
+}
+
+.summary-section::before {
+content: ‘{}’;
+position: absolute;
+right: 30px;
+bottom: -40px;
+font-family: ‘Space Mono’, monospace;
+font-size: 140px;
+color: rgba(255,255,255,0.03);
+pointer-events: none;
+line-height: 1;
+}
+
+.summary-section h3 {
+font-family: ‘Playfair Display’, serif;
+font-size: 22px;
+font-weight: 700;
+color: #f0ece3;
+margin-bottom: 20px;
+line-height: 1.3;
+}
+
+.summary-compare {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 20px;
+margin-top: 24px;
+}
+
+.summary-col {
+border-radius: 8px;
+padding: 20px;
+}
+
+.summary-col.tgd {
+background: rgba(26,92,58,0.12);
+border: 1px solid rgba(143,201,158,0.2);
+}
+
+.summary-col.gad {
+background: rgba(181,70,15,0.12);
+border: 1px solid rgba(232,164,74,0.2);
+}
+
+.summary-col-label {
+font-family: ‘Space Mono’, monospace;
+font-size: 9px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+margin-bottom: 10px;
+font-weight: 700;
+}
+
+.summary-col.tgd .summary-col-label { color: var(–code-str); }
+.summary-col.gad .summary-col-label { color: var(–code-key); }
+
+.summary-col p {
+font-size: 13px;
+color: #c8c0b0;
+line-height: 1.65;
+}
+
+/* SECTION PART ANCHORS */
+.part-anchor {
+padding-top: 40px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+.sidebar { display: none; }
+.main { margin-left: 0; }
+.hero { padding: 40px 24px 36px; }
+.hero h1 { font-size: 28px; }
+.content { padding: 0 24px 60px; }
+.summary-compare { grid-template-columns: 1fr; }
+.platform-section-header { flex-direction: column; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- SIDEBAR -->
+
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <div class="eyebrow">Code &amp; Mechanics Audit</div>
+    <h2>🕵️‍♂️ Behind the Scenes<br/>GAD vs. TGD</h2>
+  </div>
+  <div class="sidebar-body">
+
+```
+<div class="nav-group">
+  <span class="nav-group-label">The Greek Directory (TGD)</span>
+  <a href="#tgd-section" class="nav-link highlight-tgd">💻 TGD — Overview</a>
+  <a href="#tgd-1" class="nav-link sub">1. Granular User Intent Tracking</a>
+  <a href="#tgd-2" class="nav-link sub">2. Server-Side Time Accuracy</a>
+  <a href="#tgd-3" class="nav-link sub">3. Progressive Web App (PWA)</a>
+  <a href="#tgd-4" class="nav-link sub">4. Native Share &amp; Shortlink</a>
+  <a href="#tgd-5" class="nav-link sub">5. Algorithmic Chain &amp; Routing</a>
+  <a href="#tgd-6" class="nav-link sub">6. Language &amp; Translation</a>
+</div>
+
+<div class="nav-group">
+  <span class="nav-group-label">Greek American Directory (GAD)</span>
+  <a href="#gad-section" class="nav-link highlight-gad">⚠️ GAD — Detriments</a>
+  <a href="#gad-1" class="nav-link sub">1. Zero Click Tracking</a>
+  <a href="#gad-2" class="nav-link sub">2. Zero Behavioral Analytics</a>
+  <a href="#gad-3" class="nav-link sub">3. E-commerce Bloat</a>
+  <a href="#gad-4" class="nav-link sub">4. Cloudflare Email Obfuscation</a>
+  <a href="#gad-5" class="nav-link sub">5. Fragile DOM &amp; Plugin Dependency</a>
+</div>
+
+<div class="nav-group">
+  <span class="nav-group-label">Summary</span>
+  <a href="#summary" class="nav-link">🏁 Summary of Hidden Mechanics</a>
+</div>
+```
+
+  </div>
+</nav>
+
+<!-- MAIN -->
+
+<main class="main">
+
+  <!-- HERO -->
+
+  <div class="hero">
+    <div class="hero-eyebrow">Behind the Scenes</div>
+    <h1>Code &amp; Mechanics Audit<br/><em>Greek American Directory</em> vs. The Greek Directory</h1>
+    <div class="hero-sub">
+      // Focus: Hidden technical benefits and detriments for the business owner<br/>
+      // Based strictly on raw HTML, scripts, and network behaviors.
+    </div>
+    <div class="hero-pills">
+      <span class="hero-pill green">JavaScript Analysis</span>
+      <span class="hero-pill amber">Network Behavior</span>
+      <span class="hero-pill gray">Raw HTML Forensics</span>
+      <span class="hero-pill gray">Plugin Audit</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+```
+<!-- ===== TGD SECTION ===== -->
+<div id="tgd-section" class="platform-section-header">
+  <div class="platform-section-badge tgd">💻 The Greek Directory (TGD)</div>
+  <div>
+    <div class="platform-section-title">The Greek Directory (TGD)</div>
+    <div style="font-size:13px; color:var(--muted); margin-top:6px; font-family:'Outfit',sans-serif;">The source code reveals a modern, custom-built web application (likely React/Next.js output based on Tailwind classes and structure) connected to a Supabase backend. The engineering here provides massive hidden value to the business owner.</div>
+  </div>
+</div>
+
+<!-- TGD ENTRY 1 -->
+<div id="tgd-1" class="entry-card part-anchor">
+  <div class="entry-card-header">
+    <span class="entry-num">01</span>
+    <span class="entry-title">Granular User Intent Tracking (Supabase Analytics)</span>
+  </div>
+  <div class="entry-card-body">
+    <div class="code-block" data-lang="javascript">
+```
+
+<span class="kw">const</span> { <span class="fn">data</span>, <span class="fn">error</span> } = <span class="kw">await</span> <span class="fn">supabaseClient</span>.<span class="fn">from</span>(<span class="str">‘listing_analytics’</span>).<span class="fn">insert</span>({<br/>
+  <span class="fn">listing_id</span>: listingId, <span class="fn">action</span>: action, <span class="fn">platform</span>: platform || <span class="kw">null</span>…<br/>
+});
+</div>
+</div>
+</div>
+
+```
+<!-- TGD ENTRY 2 -->
+<div id="tgd-2" class="entry-card part-anchor">
+  <div class="entry-card-header">
+    <span class="entry-num">02</span>
+    <span class="entry-title">Server-Side Time &amp; Timezone Accuracy</span>
+  </div>
+  <div class="entry-card-body">
+    <div class="info-section">
+      <div class="info-label whats-happening">What's Happening</div>
+      <div class="info-text">Instead of relying on the user's computer clock (which might be in a different timezone or incorrect), the code pings a secure server API every 60 seconds (setInterval(initializeListingHoursStatus, 60000)) to check the exact time in the business's specific timezone (America/Chicago).</div>
+    </div>
+    <div class="info-section">
+      <div class="info-label benefit">Benefit to Business Owner</div>
+      <div class="info-text">Total accuracy. A user in New York looking at this Chicago business will see an accurate "Open/Closed" status based on Chicago time. This prevents frustrated customers from calling when the business is actually closed.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TGD ENTRY 3 -->
+<div id="tgd-3" class="entry-card part-anchor">
+  <div class="entry-card-header">
+    <span class="entry-num">03</span>
+    <span class="entry-title">Progressive Web App (PWA) Capabilities</span>
+  </div>
+  <div class="entry-card-body">
+    <div class="code-block" data-lang="html">
+```
+
+<span class="kw"><link</span> <span class="fn">rel</span>=<span class="str">“manifest”</span> <span class="fn">href</span>=<span class="str">”/manifest.json?access=granted”</span> /><br/>
+<span class="kw"><script</span> <span class="fn">src</span>=<span class="str">”/js/pwa/app.js?access=granted”</span><span class="kw">></script></span>
+</div>
+</div>
+</div>
+
+```
+<!-- TGD ENTRY 4 -->
+<div id="tgd-4" class="entry-card part-anchor">
+  <div class="entry-card-header">
+    <span class="entry-num">04</span>
+    <span class="entry-title">Native Share &amp; Branded Shortlink</span>
+  </div>
+  <div class="entry-card-body">
+    <div class="info-section">
+      <div class="info-label whats-happening">What's Happening</div>
+      <div class="info-text">If the user is on a mobile device, clicking "Share" triggers the phone's native share sheet (iMessage, WhatsApp, AirDrop). Furthermore, the code generates a branded shortlink (tgd.gr/stharrys).</div>
+    </div>
+    <div class="info-section">
+      <div class="info-label benefit">Benefit to Business Owner</div>
+      <div class="info-text">Frictionless word-of-mouth marketing. It makes it incredibly easy for users to text the business to a friend using a clean, professional shortlink rather than a massive, ugly URL string.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TGD ENTRY 5 -->
+<div id="tgd-5" class="entry-card part-anchor">
+  <div class="entry-card-header">
+    <span class="entry-num">05</span>
+    <span class="entry-title">Algorithmic "Chain" &amp; Ecosystem Routing</span>
+  </div>
+  <div class="entry-card-body">
+    <div class="code-block" data-lang="javascript">
+```
+
+<span class="kw">const</span> <span class="fn">response</span> = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">‘https://…supabase.co/rest/v1/listings?chain_id=eq.’</span> + chainId + <span class="str">’&visible=eq.true…’</span>);
+</div>
+</div>
+</div>
+
+```
+<!-- TGD ENTRY 6 -->
+<div id="tgd-6" class="entry-card part-anchor">
+  <div class="entry-card-header">
+    <span class="entry-num">06</span>
+    <span class="entry-title">Language &amp; Greek Translation Widget</span>
+  </div>
+  <div class="entry-card-body">
+    <div class="info-section">
+      <div class="info-label whats-happening">What's Happening</div>
+      <div class="info-text">The site utilizes the GTranslate widget, injecting a floating script that can instantly translate the DOM into Greek (el).</div>
+    </div>
+    <div class="info-section">
+      <div class="info-label benefit">Benefit to Business Owner</div>
+      <div class="info-text">Highly valuable for ethnic directories. Older generations or recent immigrants in the diaspora who prefer reading in Greek can interact with the business's English listing seamlessly.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ===== GAD SECTION ===== -->
+<div id="gad-section" class="platform-section-header">
+  <div class="platform-section-badge gad">⚠️ Greek American Directory (GAD)</div>
+  <div>
+    <div class="platform-section-title" style="color:var(--gad);">Detriments &amp; Hidden Liabilities</div>
+    <div style="font-size:13px; color:var(--muted); margin-top:6px; font-family:'Outfit',sans-serif;">The following issues were identified strictly from the raw source code, scripts, and network behavior of the GAD platform.</div>
+  </div>
+</div>
+
+<!-- GAD ENTRY 1 -->
+<div id="gad-1" class="entry-card part-anchor">
+  <div class="detriment-header">
+    <span class="detriment-tag">Detriment 1</span>
+    <span class="detriment-title">Zero Click Tracking</span>
+  </div>
+  <div class="entry-card-body">
+    <div class="info-section">
+      <div class="info-label detriment">Impact on Business Owner</div>
+      <div class="info-text">The directory cannot prove its worth. If the business owner asks, "How many people called me from your site last month?", the directory owner cannot tell them, because the code does not track link clicks.</div>
+    </div>
+  </div>
+</div>
+
+<!-- GAD ENTRY 2 -->
+<div id="gad-2" class="entry-card part-anchor">
+  <div class="detriment-header">
+    <span class="detriment-tag">Detriment 2</span>
+    <span class="detriment-title">Zero Behavioral Analytics</span>
+  </div>
+  <div class="entry-card-body">
+    <div class="code-block" data-lang="javascript">
+```
+
+<span class="cmt">// Missing: There are no custom JavaScript event listeners</span><br/>
+<span class="cmt">// attached to the phone numbers, website links, or map buttons.</span><br/>
+<span class="cmt">// The only AJAX present is for a global contact form (admin-ajax.php).</span>
+</div>
+<div class="info-section">
+<div class="info-label impact">Impact on Business Owner</div>
+<div class="info-text">The directory cannot prove its worth. If the business owner asks, “How many people called me from your site last month?”, the directory owner cannot tell them, because the code does not track link clicks.</div>
+</div>
+</div>
+</div>
+
+```
+<!-- GAD ENTRY 3 -->
+<div id="gad-3" class="entry-card part-anchor">
+  <div class="detriment-header">
+    <span class="detriment-tag">Detriment 3</span>
+    <span class="detriment-title">E-commerce Bloat on a Listing Page</span>
+  </div>
+  <div class="entry-card-body">
+    <div class="code-block" data-lang="javascript">
+```
+
+<span class="kw"><script</span> <span class="fn">type</span>=<span class="str">“text/javascript”</span> <span class="fn">src</span>=<span class="str">”…/frontend/woocommerce.min.js”</span><span class="kw">></script></span><br/>
+<span class="kw"><script</span> <span class="fn">type</span>=<span class="str">“text/javascript”</span> <span class="fn">src</span>=<span class="str">”…/frontend/add-to-cart.min.js”</span><span class="kw">></script></span>
+</div>
+</div>
+</div>
+
+```
+<!-- GAD ENTRY 4 -->
+<div id="gad-4" class="entry-card part-anchor">
+  <div class="detriment-header">
+    <span class="detriment-tag">Detriment 4</span>
+    <span class="detriment-title">Cloudflare Email Obfuscation — Easily Bypassed</span>
+  </div>
+  <div class="entry-card-body">
+    <div class="info-section">
+      <div class="info-label whats-happening">What's Happening</div>
+      <div class="info-text">The platform is relying entirely on Cloudflare's generic email obfuscation to hide the business's email from scrapers.</div>
+    </div>
+    <div class="info-section">
+      <div class="info-label impact">Impact on Business Owner</div>
+      <div class="info-text">While better than plain text, Cloudflare email decoding is easily bypassed by modern scraping bots that execute JavaScript. The business owner is highly likely to receive generic spam. (Conversely, TGD hides the email behind a tracked button click or utilizes backend routing).</div>
+    </div>
+  </div>
+</div>
+
+<!-- GAD ENTRY 5 -->
+<div id="gad-5" class="entry-card part-anchor">
+  <div class="detriment-header">
+    <span class="detriment-tag">Detriment 5</span>
+    <span class="detriment-title">Fragile DOM &amp; Plugin Dependency</span>
+  </div>
+  <div class="entry-card-body">
+    <div class="code-block" data-lang="javascript">
+```
+
+<span class="cmt">// Dozens of external library dependencies are loaded globally:</span><br/>
+<span class="cmt">// magnific-popup.js, swiper.min.js, masonry.min.js,</span><br/>
+<span class="cmt">// jquery-ui-slider.js, leaflet.js, etc.</span>
+</div>
+<div class="info-section">
+<div class="info-label impact">Impact on Business Owner</div>
+<div class="info-text">The listing’s stability is tied to a house of cards. If one of these WordPress plugins updates and conflicts with jQuery (which is heavily utilized here), the interactive elements of the business’s listing (like the image gallery or map) will simply break.</div>
+</div>
+</div>
+</div>
+
+```
+<hr class="divider"/>
+
+<!-- SUMMARY -->
+<div id="summary" class="summary-section">
+  <h3>🏁 Summary of Hidden Mechanics</h3>
+  <div class="summary-compare">
+    <div class="summary-col tgd">
+      <div class="summary-col-label">The Greek Directory (TGD)</div>
+      <p>If you were to look only at the code, The Greek Directory (TGD) operates like a piece of enterprise B2B software. It is actively working behind the scenes to gather analytics for the owner, sync real-time data, and push users into native mobile experiences.</p>
+    </div>
+    <div class="summary-col gad">
+      <div class="summary-col-label">Greek American Directory (GAD)</div>
+      <p>Greek American Directory (GAD) operates like a standard, unoptimized blog. Behind the scenes, it is loading heavy shopping cart code, failing to track user conversions, and providing almost no hidden algorithmic value to the business owner beyond a basic translation script.</p>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+</main>
+
+</body>
+</html>
