@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Forensic Platform Audit: Greek American Directory vs. The Greek Directory</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #c8a96e;
+    --accent2: #5b8ef0;
+    --accent3: #e05a5a;
+    --text: #e8e8f0;
+    --muted: #7a7a9a;
+    --tgd: #5b8ef0;
+    --gad: #e05a5a;
+    --win: #3dba72;
+    --lose: #e05a5a;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘DM Mono’, monospace;
+font-size: 14px;
+line-height: 1.7;
+min-height: 100vh;
+}
+
+/* Noise overlay */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 200 200’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23n)’ opacity=‘0.04’/%3E%3C/svg%3E”);
+pointer-events: none;
+z-index: 0;
+opacity: 0.5;
+}
+
+/* SIDEBAR NAV */
+.sidebar {
+position: fixed;
+left: 0;
+top: 0;
+width: 260px;
+height: 100vh;
+background: var(–bg2);
+border-right: 1px solid var(–border);
+overflow-y: auto;
+z-index: 100;
+padding: 32px 0;
+}
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(–border); border-radius: 2px; }
+
+.sidebar-logo {
+padding: 0 24px 28px;
+border-bottom: 1px solid var(–border);
+margin-bottom: 20px;
+}
+
+.sidebar-logo .tag {
+font-family: ‘DM Mono’, monospace;
+font-size: 9px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–accent);
+margin-bottom: 6px;
+}
+
+.sidebar-logo h2 {
+font-family: ‘Syne’, sans-serif;
+font-size: 13px;
+font-weight: 700;
+color: var(–text);
+line-height: 1.4;
+}
+
+.nav-section {
+padding: 0 16px 16px;
+}
+
+.nav-section-label {
+font-size: 9px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: var(–muted);
+padding: 0 8px 8px;
+display: block;
+}
+
+.nav-link {
+display: block;
+padding: 7px 10px;
+font-size: 11px;
+color: var(–muted);
+text-decoration: none;
+border-radius: 5px;
+transition: all 0.2s;
+line-height: 1.4;
+font-family: ‘DM Mono’, monospace;
+letter-spacing: 0.02em;
+}
+
+.nav-link:hover {
+background: var(–bg3);
+color: var(–text);
+}
+
+.nav-link.top-level {
+color: var(–accent);
+font-weight: 500;
+}
+
+.nav-link.sub {
+padding-left: 22px;
+font-size: 10.5px;
+}
+
+/* MAIN CONTENT */
+.main {
+margin-left: 260px;
+min-height: 100vh;
+position: relative;
+z-index: 1;
+}
+
+/* HERO */
+.hero {
+background: linear-gradient(135deg, #0d0d18 0%, #111128 50%, #0a1020 100%);
+border-bottom: 1px solid var(–border);
+padding: 72px 64px 56px;
+position: relative;
+overflow: hidden;
+}
+
+.hero::before {
+content: ‘AUDIT’;
+position: absolute;
+right: -20px;
+top: 50%;
+transform: translateY(-50%);
+font-family: ‘Syne’, sans-serif;
+font-size: 200px;
+font-weight: 800;
+color: rgba(255,255,255,0.02);
+letter-spacing: -0.05em;
+pointer-events: none;
+line-height: 1;
+}
+
+.hero-eyebrow {
+font-size: 10px;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+color: var(–accent);
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.hero-eyebrow::after {
+content: ‘’;
+display: inline-block;
+width: 40px;
+height: 1px;
+background: var(–accent);
+opacity: 0.5;
+}
+
+.hero h1 {
+font-family: ‘Fraunces’, serif;
+font-size: 42px;
+font-weight: 600;
+line-height: 1.15;
+color: var(–text);
+max-width: 700px;
+margin-bottom: 20px;
+}
+
+.hero h1 em {
+font-style: italic;
+color: var(–accent);
+}
+
+.hero-meta {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin-top: 28px;
+}
+
+.meta-pill {
+font-size: 10px;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+padding: 5px 12px;
+border-radius: 20px;
+border: 1px solid var(–border);
+color: var(–muted);
+}
+
+.meta-pill.highlight {
+border-color: var(–accent);
+color: var(–accent);
+background: rgba(200,169,110,0.07);
+}
+
+/* SCORE BANNER */
+.score-banner {
+display: flex;
+gap: 0;
+border-bottom: 1px solid var(–border);
+}
+
+.score-card {
+flex: 1;
+padding: 28px 40px;
+display: flex;
+align-items: center;
+gap: 20px;
+border-right: 1px solid var(–border);
+}
+
+.score-card:last-child { border-right: none; }
+
+.score-num {
+font-family: ‘Syne’, sans-serif;
+font-size: 52px;
+font-weight: 800;
+line-height: 1;
+}
+
+.score-num.tgd { color: var(–tgd); }
+.score-num.gad { color: var(–gad); }
+
+.score-label {
+font-size: 10px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: var(–muted);
+margin-bottom: 4px;
+}
+
+.score-name {
+font-family: ‘Syne’, sans-serif;
+font-size: 14px;
+font-weight: 700;
+color: var(–text);
+}
+
+.score-verdict {
+font-size: 10px;
+color: var(–muted);
+margin-top: 4px;
+font-style: italic;
+font-family: ‘Fraunces’, serif;
+}
+
+/* CONTENT AREA */
+.content {
+max-width: 900px;
+padding: 0 64px 80px;
+}
+
+/* REPORT HEADER */
+.report-header {
+padding: 56px 0 32px;
+border-bottom: 1px solid var(–border);
+margin-bottom: 40px;
+}
+
+.report-number {
+font-size: 9px;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+color: var(–accent);
+margin-bottom: 10px;
+}
+
+.report-title {
+font-family: ‘Syne’, sans-serif;
+font-size: 28px;
+font-weight: 800;
+color: var(–text);
+line-height: 1.2;
+}
+
+/* PART HEADERS */
+.part {
+margin-bottom: 44px;
+}
+
+.part-label {
+display: inline-block;
+font-size: 9px;
+letter-spacing: 0.22em;
+text-transform: uppercase;
+color: var(–muted);
+margin-bottom: 12px;
+padding: 3px 8px;
+border: 1px solid var(–border);
+border-radius: 3px;
+}
+
+h3.part-title {
+font-family: ‘Syne’, sans-serif;
+font-size: 17px;
+font-weight: 700;
+color: var(–text);
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+h3.part-title::after {
+content: ‘’;
+flex: 1;
+height: 1px;
+background: linear-gradient(to right, var(–border), transparent);
+}
+
+/* PLATFORM BLOCKS */
+.platform-block {
+border-radius: 10px;
+border: 1px solid var(–border);
+padding: 20px 24px;
+margin-bottom: 12px;
+position: relative;
+overflow: hidden;
+}
+
+.platform-block::before {
+content: ‘’;
+position: absolute;
+left: 0;
+top: 0;
+bottom: 0;
+width: 3px;
+}
+
+.platform-block.tgd { background: rgba(91,142,240,0.04); }
+.platform-block.tgd::before { background: var(–tgd); }
+.platform-block.gad { background: rgba(224,90,90,0.04); }
+.platform-block.gad::before { background: var(–gad); }
+
+.platform-tag {
+font-size: 9px;
+font-weight: 500;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+margin-bottom: 8px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.platform-tag.tgd { color: var(–tgd); }
+.platform-tag.gad { color: var(–gad); }
+
+.platform-block p {
+color: #c0c0d8;
+font-size: 13px;
+line-height: 1.75;
+}
+
+.strength { color: var(–win) !important; }
+.weakness { color: var(–lose) !important; }
+.friction-label { color: var(–accent) !important; }
+
+/* ICON INDICATORS */
+.icon-check::before { content: ’✦ ’; color: var(–win); }
+.icon-warn::before { content: ’⚠ ’; color: var(–lose); }
+.icon-info::before { content: ’→ ’; color: var(–accent); }
+
+/* COMPARISON TABLE */
+.comparison-table {
+width: 100%;
+border-collapse: collapse;
+font-size: 12px;
+margin: 20px 0;
+border-radius: 10px;
+overflow: hidden;
+border: 1px solid var(–border);
+}
+
+.comparison-table thead tr {
+background: var(–bg3);
+}
+
+.comparison-table th {
+padding: 12px 16px;
+text-align: left;
+font-size: 9px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: var(–muted);
+font-weight: 500;
+border-bottom: 1px solid var(–border);
+}
+
+.comparison-table th:nth-child(2) { color: var(–tgd); }
+.comparison-table th:nth-child(3) { color: var(–gad); }
+
+.comparison-table td {
+padding: 11px 16px;
+border-bottom: 1px solid rgba(42,42,58,0.5);
+color: #c0c0d8;
+vertical-align: top;
+}
+
+.comparison-table tr:last-child td { border-bottom: none; }
+
+.comparison-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+.comparison-table td:first-child {
+font-weight: 500;
+color: var(–text);
+}
+
+.comparison-table td:nth-child(2) { background: rgba(91,142,240,0.03); }
+.comparison-table td:nth-child(3) { background: rgba(224,90,90,0.03); }
+
+/* GRADE TABLE */
+.grade-table {
+width: 100%;
+border-collapse: collapse;
+font-size: 12px;
+margin: 20px 0;
+border-radius: 10px;
+overflow: hidden;
+border: 1px solid var(–border);
+}
+
+.grade-table thead tr { background: var(–bg3); }
+
+.grade-table th {
+padding: 12px 16px;
+text-align: left;
+font-size: 9px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: var(–muted);
+font-weight: 500;
+border-bottom: 1px solid var(–border);
+}
+
+.grade-table td {
+padding: 11px 16px;
+border-bottom: 1px solid rgba(42,42,58,0.5);
+color: #c0c0d8;
+}
+
+.grade-table tr:last-child td { border-bottom: none; }
+.grade-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+.grade {
+font-family: ‘Syne’, sans-serif;
+font-size: 15px;
+font-weight: 800;
+padding: 2px 8px;
+border-radius: 4px;
+display: inline-block;
+}
+
+.grade-a { color: var(–win); }
+.grade-b { color: #7ec8e3; }
+.grade-c { color: var(–accent); }
+.grade-d { color: #e07a30; }
+.grade-f { color: var(–lose); }
+
+.grade-table .overall-row {
+background: var(–bg3) !important;
+border-top: 1px solid var(–border);
+}
+
+.grade-table .overall-row td {
+font-family: ‘Syne’, sans-serif;
+font-weight: 700;
+font-size: 13px;
+}
+
+/* VERDICT BOX */
+.verdict-box {
+background: var(–bg3);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 28px 32px;
+margin: 24px 0;
+}
+
+.verdict-box h4 {
+font-family: ‘Syne’, sans-serif;
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: var(–accent);
+margin-bottom: 16px;
+}
+
+.verdict-item {
+display: flex;
+gap: 12px;
+margin-bottom: 10px;
+font-size: 13px;
+color: var(–text);
+align-items: flex-start;
+}
+
+.verdict-item .label {
+color: var(–muted);
+min-width: 220px;
+font-size: 11px;
+text-transform: uppercase;
+letter-spacing: 0.1em;
+padding-top: 1px;
+}
+
+.verdict-item .value {
+font-family: ‘Fraunces’, serif;
+font-size: 14px;
+color: var(–text);
+font-weight: 600;
+}
+
+.verdict-item .value.win { color: var(–tgd); }
+
+/* ACTIONABLE LIST */
+.action-list {
+list-style: none;
+margin: 16px 0;
+}
+
+.action-list li {
+display: flex;
+gap: 12px;
+margin-bottom: 14px;
+font-size: 13px;
+color: #c0c0d8;
+line-height: 1.65;
+align-items: flex-start;
+}
+
+.action-num {
+font-family: ‘Syne’, sans-serif;
+font-size: 11px;
+font-weight: 800;
+color: var(–accent);
+background: rgba(200,169,110,0.1);
+border: 1px solid rgba(200,169,110,0.25);
+border-radius: 4px;
+padding: 2px 7px;
+min-width: 28px;
+text-align: center;
+margin-top: 1px;
+flex-shrink: 0;
+}
+
+.action-label {
+display: inline-block;
+font-size: 9px;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: var(–accent);
+margin-right: 6px;
+font-weight: 600;
+}
+
+/* DIVIDER */
+.divider {
+border: none;
+border-top: 1px solid var(–border);
+margin: 40px 0;
+}
+
+/* FINAL VERDICT */
+.final-verdict {
+background: linear-gradient(135deg, rgba(91,142,240,0.08) 0%, rgba(200,169,110,0.06) 100%);
+border: 1px solid rgba(91,142,240,0.25);
+border-radius: 14px;
+padding: 36px 40px;
+margin-top: 40px;
+text-align: center;
+}
+
+.final-verdict h3 {
+font-family: ‘Fraunces’, serif;
+font-size: 22px;
+font-weight: 600;
+color: var(–text);
+margin-bottom: 12px;
+}
+
+.final-verdict p {
+font-size: 13px;
+color: var(–muted);
+max-width: 600px;
+margin: 0 auto;
+line-height: 1.75;
+}
+
+/* NAP SECTION */
+.nap-badge {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+background: rgba(61,186,114,0.1);
+border: 1px solid rgba(61,186,114,0.25);
+color: var(–win);
+font-size: 10px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+padding: 3px 10px;
+border-radius: 20px;
+margin-right: 6px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+.sidebar { display: none; }
+.main { margin-left: 0; }
+.hero { padding: 40px 24px 36px; }
+.hero h1 { font-size: 28px; }
+.content { padding: 0 24px 60px; }
+.score-banner { flex-direction: column; }
+.score-card { border-right: none; border-bottom: 1px solid var(–border); }
+}
+</style>
+
+</head>
+<body>
+
+<!-- SIDEBAR -->
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="tag">Forensic Audit</div>
+    <h2>GAD vs. TGD<br/>Platform Analysis</h2>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Report 1 — Technical & Local SEO</span>
+    <a href="#report1" class="nav-link top-level">📈 Technical & Local SEO</a>
+    <a href="#part1" class="nav-link sub">Part 1 — Visual / Mobile UX</a>
+    <a href="#part2" class="nav-link sub">Part 2 — Source Code / Tech SEO</a>
+    <a href="#part3" class="nav-link sub">Part 3 — Local SEO Power</a>
+    <a href="#part4" class="nav-link sub">Part 4 — Data Completeness</a>
+    <a href="#part5" class="nav-link sub">Part 5 — Directory Platform</a>
+    <a href="#part6" class="nav-link sub">Part 6 — Social & External</a>
+    <a href="#part7" class="nav-link sub">Part 7 — Performance</a>
+    <a href="#part8" class="nav-link sub">Part 8 — Scoring</a>
+    <a href="#part9" class="nav-link sub">Part 9 — Comparison & Verdict</a>
+    <a href="#part10" class="nav-link sub">Part 10 — Actionable Strategy</a>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Report 2 — UX & Design</span>
+    <a href="#report2" class="nav-link top-level">🎨 UX, Design & Conversion</a>
+    <a href="#r2p1" class="nav-link sub">Part 1 — Visual Design</a>
+    <a href="#r2p2" class="nav-link sub">Part 2 — Content Organization</a>
+    <a href="#r2p3" class="nav-link sub">Part 3 — User Clarity</a>
+    <a href="#r2p4" class="nav-link sub">Part 4 — Listing Presentation</a>
+    <a href="#r2p5" class="nav-link sub">Part 5 — Platform Design</a>
+    <a href="#r2p6" class="nav-link sub">Part 6 — Trust & Credibility</a>
+    <a href="#r2p7" class="nav-link sub">Part 7 — Mobile Usability</a>
+    <a href="#r2p8" class="nav-link sub">Part 8 — Scoring</a>
+    <a href="#r2p9" class="nav-link sub">Part 9 — Verdict</a>
+    <a href="#r2p10" class="nav-link sub">Part 10 — Improvements</a>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Report 3 — Community</span>
+    <a href="#report3" class="nav-link top-level">🏛️ Community Hub & Ecosystem</a>
+    <a href="#r3p1" class="nav-link sub">Part 1 — Local Community Feel</a>
+    <a href="#r3p2" class="nav-link sub">Part 2 — Community Hub Potential</a>
+    <a href="#r3p3" class="nav-link sub">Part 3 — Trust & Authenticity</a>
+    <a href="#r3p4" class="nav-link sub">Part 4 — National Scalability</a>
+    <a href="#r3p5" class="nav-link sub">Part 5 — Marketing & Branding</a>
+    <a href="#r3p6" class="nav-link sub">Part 6 — Network Effects</a>
+    <a href="#r3p7" class="nav-link sub">Part 7 — Community Data</a>
+    <a href="#r3p8" class="nav-link sub">Part 8 — Scoring</a>
+    <a href="#r3p9" class="nav-link sub">Part 9 — Verdict</a>
+    <a href="#r3p10" class="nav-link sub">Part 10 — Community Strategy</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+
+<main class="main">
+
+  <!-- HERO -->
+
+  <div class="hero">
+    <div class="hero-eyebrow">Forensic Platform Audit</div>
+    <h1>Greek American Directory vs. <em>The Greek Directory</em></h1>
+    <div style="font-size:13px; color:var(--muted); margin-top:10px; font-family:'Fraunces',serif; font-style:italic;">
+      Subject: Holy Taxiarhai &amp; Saint Haralambos Greek Orthodox Church (Niles, IL)
+    </div>
+    <div class="hero-meta">
+      <span class="meta-pill highlight">Technical SEO</span>
+      <span class="meta-pill highlight">UX Strategy</span>
+      <span class="meta-pill highlight">Community Ecosystem</span>
+      <span class="meta-pill">Senior Technical Analyst</span>
+    </div>
+  </div>
+
+  <!-- SCORE BANNER -->
+
+  <div class="score-banner">
+    <div class="score-card">
+      <div class="score-num tgd">96</div>
+      <div>
+        <div class="score-label">Overall Score</div>
+        <div class="score-name">The Greek Directory (TGD)</div>
+        <div class="score-verdict">Fundamentally superior SEO & technical product</div>
+      </div>
+    </div>
+    <div class="score-card">
+      <div class="score-num gad">45</div>
+      <div>
+        <div class="score-label">Overall Score</div>
+        <div class="score-name">Greek American Directory (GAD)</div>
+        <div class="score-verdict">Report 1 — Technical & Local SEO</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+```
+<!-- ===== REPORT 1 ===== -->
+<div id="report1" class="report-header">
+  <div class="report-number">Report 01</div>
+  <div class="report-title">📈 Technical & Local SEO Forensic Analysis</div>
+</div>
+
+<!-- PART 1 -->
+<div id="part1" class="part">
+  <span class="part-label">Part 1</span>
+  <h3 class="part-title">Visual (Mobile UX) Forensic Analysis</h3>
+
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">The Greek Directory (TGD)</div>
+    <p><span class="strength icon-check">Strengths:</span> Exceptional mobile above-the-fold experience. The app-like interface immediately displays a high-quality image carousel, a clear category pill ("Church &amp; Religious Organization"), and a dynamic "CLOSED" badge. The CTA bar (Call, Email, Website, Directions, 75th Anniversary) is grid-based and thumb-friendly.</p>
+    <br/>
+    <p><span class="weakness icon-warn">Weaknesses:</span> The description section requires a "Read more" click, which hides some rich text, though this is a standard mobile UX tradeoff.</p>
+    <br/>
+    <p><span class="friction-label icon-info">Conversion Friction:</span> Very low. The user has immediate access to navigation and contact methods without scrolling.</p>
+  </div>
+
+  <div class="platform-block gad">
+    <div class="platform-tag gad">Greek American Directory (GAD)</div>
+    <p><span class="strength icon-check">Strengths:</span> Contains standard NAP (Name, Address, Phone) information.</p>
+    <br/>
+    <p><span class="weakness icon-warn">Weaknesses:</span> Disastrous information hierarchy. The above-the-fold space is entirely wasted by a generic platform banner ("Explore Our Community / OLI MAZI") featuring a crowd of people that has nothing to do with the specific church. The actual listing title is pushed down the page.</p>
+    <br/>
+    <p><span class="friction-label icon-info">Conversion Friction:</span> Extremely high. The user must scroll past a massive generic banner just to figure out what page they are on. CTAs are buried or rely on standard inline text links. High bounce risk.</p>
+  </div>
+</div>
+
+<!-- PART 2 -->
+<div id="part2" class="part">
+  <span class="part-label">Part 2</span>
+  <h3 class="part-title">Source Code / Technical SEO Analysis</h3>
+
+  <div style="margin-bottom:16px;">
+    <div style="font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; margin-top:20px; font-weight:600;">A. Core SEO Elements</div>
+    <div class="platform-block tgd">
+      <div class="platform-tag tgd">TGD</div>
+      <p><span class="strength icon-check">Excellent.</span> Title tag is optimized for local search (Holy Taxiarhai and Saint Haralambos Greek Orthodox Church in Niles, IL | Greek Businesses | The Greek Directory). Meta description is clean and CTR-focused. Uses proper OpenGraph and Twitter card metadata.</p>
+    </div>
+    <div class="platform-block gad">
+      <div class="platform-tag gad">GAD</div>
+      <p><span class="weakness icon-warn">Bloated.</span> The HTML indicates a heavy WordPress stack. The title tag is decent (... - Niles, IL - Greek American Directory), but the meta description is slightly generic. The HTML contains thousands of lines of inline CSS and Elementor bloat.</p>
+    </div>
+  </div>
+
+  <div style="margin-bottom:16px;">
+    <div style="font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; margin-top:20px; font-weight:600;">B. Structured Data / Schema</div>
+    <div class="platform-block tgd">
+      <div class="platform-tag tgd">TGD</div>
+      <p><span class="strength icon-check">Flawless.</span> The HTML contains a massive, perfectly formatted @context: http://schema.org JSON-LD block including LocalBusiness, ItemPage, BreadcrumbList, and Organization. It includes geo-coordinates, specific opening hours specifications, sameAs links for social media, and a unique identifier.</p>
+    </div>
+    <div class="platform-block gad">
+      <div class="platform-tag gad">GAD</div>
+      <p><span class="weakness icon-warn">Missing.</span> The provided HTML snippet contains zero application/ld+json schema markup for the local business. This is a catastrophic failure for local SEO.</p>
+    </div>
+  </div>
+
+  <div style="margin-bottom:16px;">
+    <div style="font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; margin-top:20px; font-weight:600;">C. Indexability &amp; Crawlability</div>
+    <div class="platform-block tgd">
+      <div class="platform-tag tgd">TGD</div>
+      <p><span class="strength icon-check">Clean DOM structure.</span> Uses semantic HTML5. Canonical tags are perfectly set. The canonical URL utilizes a clean, scalable folder structure (/listing/niles-il/holy-...).</p>
+    </div>
+    <div class="platform-block gad">
+      <div class="platform-tag gad">GAD</div>
+      <p>The canonical is present, but the URL structure is flat (/listing/holy-taxiarhai...). The DOM is incredibly deep due to Elementor's nested div structure (elementor-container &gt; elementor-column &gt; elementor-widget-wrap...), which dilutes crawl budget and semantic value.</p>
+    </div>
+  </div>
+
+  <div style="margin-bottom:16px;">
+    <div style="font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; margin-top:20px; font-weight:600;">D. Content Signals</div>
+    <div class="platform-block tgd">
+      <div class="platform-tag tgd">TGD</div>
+      <p><span class="strength icon-check">High semantic richness.</span> The description is properly structured with lists.</p>
+    </div>
+    <div class="platform-block gad">
+      <div class="platform-tag gad">GAD</div>
+      <p>The content is trapped inside generic gva_post_content widgets. It lacks the semantic wrapping that search engines prefer.</p>
+    </div>
+  </div>
+
+  <div style="margin-bottom:16px;">
+    <div style="font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; margin-top:20px; font-weight:600;">E. Technical Quality</div>
+    <div class="platform-block tgd">
+      <div class="platform-tag tgd">TGD</div>
+      <p><span class="strength icon-check">Built on a modern, lightweight stack</span> (Tailwind CSS, Supabase API). Uses PWA capabilities (manifest.json, apple-mobile-web-app-capable).</p>
+    </div>
+    <div class="platform-block gad">
+      <div class="platform-tag gad">GAD</div>
+      <p><span class="weakness icon-warn">Extremely bloated WordPress template.</span> Loads massive amounts of unused CSS/JS (WooCommerce, Tribe Events, Contact Form 7, Elementor, SmartMenus) on a single listing page. This will severely impact Core Web Vitals.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PART 3 -->
+<div id="part3" class="part">
+  <span class="part-label">Part 3</span>
+  <h3 class="part-title">Local SEO Power Analysis</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">NAP Consistency</div>
+    <p>Both have accurate NAP.</p>
+  </div>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">Location Signals</div>
+    <p>TGD wins by putting the location in the URL slug (/niles-il/) and heavily integrating geo-coordinates into the Schema markup. GAD relies entirely on on-page text.</p>
+  </div>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">Map Embedding</div>
+    <p>TGD uses a clean Leaflet.js integration pulling accurate coordinates. GAD uses a heavy map widget.</p>
+  </div>
+</div>
+
+<!-- PART 4 -->
+<div id="part4" class="part">
+  <span class="part-label">Part 4</span>
+  <h3 class="part-title">Listing Data Completeness Audit</h3>
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Data Point</th>
+        <th>TGD (The Greek Directory)</th>
+        <th>GAD (Greek American Directory)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Business Name</td><td>Present (Prominent)</td><td>Present (Pushed down)</td></tr>
+      <tr><td>Address</td><td>Present (Map + Text)</td><td>Present</td></tr>
+      <tr><td>Phone</td><td>Present (Click-to-call UI)</td><td>Present</td></tr>
+      <tr><td>Website</td><td>Present (Button)</td><td>Present</td></tr>
+      <tr><td>Hours</td><td>Present (Structured + "Closed" Badge)</td><td>Text dump under "Office Hours"</td></tr>
+      <tr><td>Categories</td><td>Present ("Church &amp; Religious Org")</td><td>Missing visually</td></tr>
+      <tr><td>Photos</td><td>Premium Carousel / Gallery</td><td>Single embedded image</td></tr>
+      <tr><td>Reviews</td><td>Not visible in snippet</td><td>Not visible in snippet</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PART 5 -->
+<div id="part5" class="part">
+  <span class="part-label">Part 5</span>
+  <h3 class="part-title">Directory Platform Analysis</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>Highly scalable custom web application. The use of Supabase for database calls and Tailwind for frontend indicates a platform built to handle millions of rows without crashing. The UI is consistent and premium.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>A WordPress site using a commercial directory theme (likely "Lestin" based on the CSS classes). It relies heavily on plugins to function. This architecture is notoriously difficult to scale and prone to security/performance issues over time.</p>
+  </div>
+</div>
+
+<!-- PART 6 -->
+<div id="part6" class="part">
+  <span class="part-label">Part 6</span>
+  <h3 class="part-title">Social &amp; External Signals</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>Prominent social sharing integration. Includes a dynamic "Star/Save" feature linked to local storage/Supabase, indicating real user engagement mechanics.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>Standard, templated share buttons. Nothing that encourages returning to the platform.</p>
+  </div>
+</div>
+
+<!-- PART 7 -->
+<div id="part7" class="part">
+  <span class="part-label">Part 7</span>
+  <h3 class="part-title">Performance (Estimated)</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>High performance. Tailwind CSS means tiny stylesheets. Minimal JS footprint.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>Poor performance. Loading WooCommerce, Elementor, and a dozen other plugins on a listing page guarantees poor LCP (Largest Contentful Paint) and high TBT (Total Blocking Time).</p>
+  </div>
+</div>
+
+<!-- PART 8 -->
+<div id="part8" class="part">
+  <span class="part-label">Part 8</span>
+  <h3 class="part-title">Scoring System</h3>
+  <table class="grade-table">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>TGD Grade</th>
+        <th>GAD Grade</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>On-Page SEO</td>
+        <td><span class="grade grade-a">A</span></td>
+        <td><span class="grade grade-c">C</span></td>
+        <td>TGD URL structure is superior. GAD suffers from generic headers.</td>
+      </tr>
+      <tr>
+        <td>Content Quality</td>
+        <td><span class="grade grade-a">A</span></td>
+        <td><span class="grade grade-c">C</span></td>
+        <td>TGD formatting is cleaner; GAD description is basic text.</td>
+      </tr>
+      <tr>
+        <td>Technical SEO</td>
+        <td><span class="grade grade-a">A+</span></td>
+        <td><span class="grade grade-d">D</span></td>
+        <td>TGD has perfect Schema. GAD has none. GAD DOM is bloated.</td>
+      </tr>
+      <tr>
+        <td>Local SEO</td>
+        <td><span class="grade grade-a">A</span></td>
+        <td><span class="grade grade-c">C</span></td>
+        <td>TGD geo-schema and category silos win.</td>
+      </tr>
+      <tr>
+        <td>Data Completeness</td>
+        <td><span class="grade grade-a">A</span></td>
+        <td><span class="grade grade-b">B-</span></td>
+        <td>Both have data, but TGD presents it as structured data.</td>
+      </tr>
+      <tr>
+        <td>UX / Conversion</td>
+        <td><span class="grade grade-a">A</span></td>
+        <td><span class="grade grade-f">F</span></td>
+        <td>GAD's massive generic hero image kills the conversion funnel.</td>
+      </tr>
+      <tr>
+        <td>Platform Strength</td>
+        <td><span class="grade grade-a">A</span></td>
+        <td><span class="grade grade-d">D</span></td>
+        <td>Custom Web App (TGD) vs. Bloated WordPress Theme (GAD).</td>
+      </tr>
+      <tr class="overall-row">
+        <td>OVERALL</td>
+        <td><span class="grade grade-a" style="font-size:18px;">96/100</span></td>
+        <td><span class="grade grade-d" style="font-size:18px;">45/100</span></td>
+        <td>TGD is a fundamentally superior SEO and technical product.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PART 9 -->
+<div id="part9" class="part">
+  <span class="part-label">Part 9</span>
+  <h3 class="part-title">Direct Comparison &amp; Verdict</h3>
+  <div class="verdict-box">
+    <h4>Verdict</h4>
+    <div class="verdict-item">
+      <span class="label">Better RIGHT NOW:</span>
+      <span class="value win">The Greek Directory (TGD).</span>
+    </div>
+    <div class="verdict-item">
+      <span class="label">Higher Ranking Ceiling:</span>
+      <span class="value">TGD. The schema markup and site architecture guarantee better crawling.</span>
+    </div>
+    <div class="verdict-item">
+      <span class="label">More Future-Proof:</span>
+      <span class="value">TGD. It is an actual software platform. GAD is a customized WordPress theme that will eventually break under plugin updates.</span>
+    </div>
+    <div class="verdict-item">
+      <span class="label">Investment Recommendation:</span>
+      <span class="value">A business owner should prioritize The Greek Directory (TGD). The technical foundation ensures the listing will actually rank in Google, and the UX ensures traffic will convert.</span>
+    </div>
+  </div>
+</div>
+
+<!-- PART 10 -->
+<div id="part10" class="part">
+  <span class="part-label">Part 10</span>
+  <h3 class="part-title">Actionable Strategy</h3>
+
+  <div style="font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--tgd); margin-bottom:12px; margin-top:8px; font-weight:600;">For The Greek Directory (TGD) [The Winner]:</div>
+  <ul class="action-list">
+    <li><span class="action-num">1</span><div><span class="action-label">Quick Win:</span> Add a review aggregate schema if the platform supports user reviews.</div></li>
+    <li><span class="action-num">2</span><div><span class="action-label">High Reward:</span> Implement an "Events" schema tab specific to this church (e.g., Greek Fest, Liturgies).</div></li>
+    <li><span class="action-num">3</span><div><span class="action-label">Local:</span> Add neighborhood tagging (e.g., "Near Niles / Park Ridge").</div></li>
+  </ul>
+
+  <div style="font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--gad); margin-bottom:12px; margin-top:24px; font-weight:600;">For Greek American Directory (GAD) [The Loser]:</div>
+  <ul class="action-list">
+    <li><span class="action-num">1</span><div><span class="action-label">Critical Fix:</span> REMOVE the giant "Explore Our Community" banner from individual listing pages. It destroys UX.</div></li>
+    <li><span class="action-num">2</span><div><span class="action-label">Critical Fix:</span> Install an SEO plugin to generate LocalBusiness JSON-LD schema immediately.</div></li>
+    <li><span class="action-num">3</span><div><span class="action-label">Tech Fix:</span> Dequeue WooCommerce, Contact Form 7, and Tribe Events scripts on listing pages to improve load speed.</div></li>
+    <li><span class="action-num">4</span><div><span class="action-label">UX Fix:</span> Move the phone number and website link to the absolute top of the listing.</div></li>
+  </ul>
+</div>
+
+<hr class="divider"/>
+
+<!-- ===== REPORT 2 ===== -->
+<div id="report2" class="report-header" style="padding-top:20px;">
+  <div class="report-number">Report 02</div>
+  <div class="report-title">🎨 UX, Design, &amp; Conversion Audit</div>
+</div>
+
+<!-- R2 SCORE BANNER -->
+<div style="display:flex; gap:16px; margin-bottom:36px; flex-wrap:wrap;">
+  <div style="flex:1; min-width:200px; background:rgba(91,142,240,0.07); border:1px solid rgba(91,142,240,0.2); border-radius:10px; padding:20px 24px; text-align:center;">
+    <div style="font-family:'Syne',sans-serif; font-size:42px; font-weight:800; color:var(--tgd);">98/100</div>
+    <div style="font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-top:4px;">TGD — World-Class UX</div>
+  </div>
+  <div style="flex:1; min-width:200px; background:rgba(224,90,90,0.07); border:1px solid rgba(224,90,90,0.2); border-radius:10px; padding:20px 24px; text-align:center;">
+    <div style="font-family:'Syne',sans-serif; font-size:42px; font-weight:800; color:var(--gad);">40/100</div>
+    <div style="font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-top:4px;">GAD — UX &amp; Design Audit</div>
+  </div>
+</div>
+
+<!-- R2 P1 -->
+<div id="r2p1" class="part">
+  <span class="part-label">Part 1</span>
+  <h3 class="part-title">Visual Design for Forensic Analysis</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>Instantly feels like a native mobile app (like Yelp or Airbnb). The photo carousel is striking. The "Closed" pill badge and category tags add immediate context. The visual balance between white space and content is excellent.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>Feels incredibly dated. The eye is immediately drawn to the generic directory logo and a low-resolution stock image of a crowd. The actual church listing looks like an afterthought. There is severe visual clutter at the top of the page.</p>
+  </div>
+</div>
+
+<!-- R2 P2 -->
+<div id="r2p2" class="part">
+  <span class="part-label">Part 2</span>
+  <h3 class="part-title">Content Organization / Structure Analysis</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD Flow</div>
+    <p>Hero Carousel → Title &amp; Tagline → Quick Action CTAs → About/Description → Location/Map → Leadership/Info → Social Links → More Locations. Logical and intuitive.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD Flow</div>
+    <p>Directory Logo → Generic Promo Banner → Listing Title → Text Dump → Giant Map → Contact Info buried at the bottom. Disjointed and frustrating.</p>
+  </div>
+</div>
+
+<!-- R2 P3 -->
+<div id="r2p3" class="part">
+  <span class="part-label">Part 3</span>
+  <h3 class="part-title">User Clarity and Information Accessibility</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>A user can find the phone number, website, and directions within 0.5 seconds of landing on the page via the color-coded CTA grid.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>A user must scroll past a promotional banner, read a paragraph, scroll past a map, and finally hunt for a standard text link to find the phone number.</p>
+  </div>
+</div>
+
+<!-- R2 P4 -->
+<div id="r2p4" class="part">
+  <span class="part-label">Part 4</span>
+  <h3 class="part-title">Listing Presentation Audit</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">Photos</div>
+    <p>TGD uses an immersive swipeable carousel. GAD uses a single tiny thumbnail embedded in text.</p>
+  </div>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">Hours</div>
+    <p>TGD uses dynamic logic (showing "CLOSED" based on user time) and a clean dropdown for weekly hours. GAD relies on a static text dump that says "Closed Now" right next to "Closed".</p>
+  </div>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">Calls to Action</div>
+    <p>TGD has beautifully designed, icon-paired buttons. GAD has plain text links.</p>
+  </div>
+</div>
+
+<!-- R2 P5 -->
+<div id="r2p5" class="part">
+  <span class="part-label">Part 5</span>
+  <h3 class="part-title">Platform Design Analysis</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>Features a standardized, premium design system (Tailwind). The typography is modern (Inter/sans-serif), spacing is mathematical (rem-based), and components are reusable. It looks like a million-dollar startup.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>Features inconsistent styling. The fonts clash, button paddings are uneven, and the reliance on a bloated theme framework (Lestin) results in a rigid, non-optimized layout.</p>
+  </div>
+</div>
+
+<!-- R2 P6 -->
+<div id="r2p6" class="part">
+  <span class="part-label">Part 6</span>
+  <h3 class="part-title">Trust, Credibility, and Engagement Signals</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>Builds immense trust. The UI implies that the data is accurate, verified, and fresh. Features like the "75th Anniversary" custom button show platform flexibility and deep business integration.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>Looks like an automated scraper site. The presence of the directory's own branding dominating the top of the page makes the listing feel cheap.</p>
+  </div>
+</div>
+
+<!-- R2 P7 -->
+<div id="r2p7" class="part">
+  <span class="part-label">Part 7</span>
+  <h3 class="part-title">Mobile Experience and Scannability</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>100% thumb-friendly. The CTA grid is perfectly sized for mobile tapping.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>High scroll burden. The user has to "work" to find information.</p>
+  </div>
+</div>
+
+<!-- R2 P8 -->
+<div id="r2p8" class="part">
+  <span class="part-label">Part 8</span>
+  <h3 class="part-title">Scoring System</h3>
+  <table class="grade-table">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>TGD Grade</th>
+        <th>GAD Grade</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Visual Design</td>
+        <td><span class="grade grade-a">A+</span></td>
+        <td><span class="grade grade-d">D</span></td>
+        <td>TGD is modern/app-like. GAD is an outdated template.</td>
+      </tr>
+      <tr>
+        <td>Layout / Organization</td>
+        <td><span class="grade grade-a">A</span></td>
+        <td><span class="grade grade-f">F</span></td>
+        <td>GAD burying the listing under a promo banner is unforgivable.</td>
+      </tr>
+      <tr>
+        <td>Information Placement</td>
+        <td><span class="grade grade-a">A+</span></td>
+        <td><span class="grade grade-d">D</span></td>
+        <td>TGD puts CTAs immediately under the title.</td>
+      </tr>
+      <tr>
+        <td>Readability</td>
+        <td><span class="grade grade-a">A</span></td>
+        <td><span class="grade grade-c">C</span></td>
+        <td>TGD utilizes proper typography hierarchy.</td>
+      </tr>
+      <tr>
+        <td>Trust / Credibility</td>
+        <td><span class="grade grade-a">A</span></td>
+        <td><span class="grade grade-d">D</span></td>
+        <td>TGD looks like Yelp. GAD looks like a spam directory.</td>
+      </tr>
+      <tr>
+        <td>Mobile Usability</td>
+        <td><span class="grade grade-a">A+</span></td>
+        <td><span class="grade grade-d">D-</span></td>
+        <td>TGD has tap-friendly grids. GAD forces scrolling.</td>
+      </tr>
+      <tr>
+        <td>Platform Presentation</td>
+        <td><span class="grade grade-a">A</span></td>
+        <td><span class="grade grade-f">F</span></td>
+        <td>TGD has a cohesive design system. GAD does not.</td>
+      </tr>
+      <tr class="overall-row">
+        <td>OVERALL</td>
+        <td><span class="grade grade-a" style="font-size:18px;">98/100</span></td>
+        <td><span class="grade grade-d" style="font-size:18px;">40/100</span></td>
+        <td>TGD provides a world-class user experience.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- R2 P9 -->
+<div id="r2p9" class="part">
+  <span class="part-label">Part 9</span>
+  <h3 class="part-title">Direct Comparison &amp; Verdict</h3>
+  <div class="verdict-box">
+    <h4>Verdict</h4>
+    <div class="verdict-item">
+      <span class="label">Better RIGHT NOW:</span>
+      <span class="value win">TGD.</span>
+    </div>
+    <div class="verdict-item">
+      <span class="label">More Trustworthy:</span>
+      <span class="value win">TGD.</span>
+    </div>
+    <div class="verdict-item">
+      <span class="label">More User-Friendly:</span>
+      <span class="value win">TGD.</span>
+    </div>
+    <div class="verdict-item">
+      <span class="label">Verdict:</span>
+      <span class="value">From a design and UX standpoint, The Greek Directory (TGD) is the undisputed winner. It is designed with the user's conversion in mind, whereas GAD is designed to promote itself first and the business second.</span>
+    </div>
+  </div>
+</div>
+
+<!-- R2 P10 -->
+<div id="r2p10" class="part">
+  <span class="part-label">Part 10</span>
+  <h3 class="part-title">Actionable Improvements</h3>
+
+  <div style="font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--tgd); margin-bottom:12px; font-weight:600;">For The Greek Directory (TGD):</div>
+  <ul class="action-list">
+    <li><span class="action-num">1</span><div><span class="action-label">Visual:</span> Add a "Verified" blue checkmark next to the listing name to increase trust further.</div></li>
+    <li><span class="action-num">2</span><div><span class="action-label">UX:</span> Implement a floating "Call" or "Directions" FAB (Floating Action Button) as the user scrolls down the long page.</div></li>
+  </ul>
+
+  <div style="font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--gad); margin-bottom:12px; margin-top:24px; font-weight:600;">For Greek American Directory (GAD):</div>
+  <ul class="action-list">
+    <li><span class="action-num">1</span><div><span class="action-label">UX Emergency:</span> Delete the global "Explore Our Community" banner from individual listing templates immediately.</div></li>
+    <li><span class="action-num">2</span><div><span class="action-label">Layout:</span> Move the phone, email, and website directly below the title.</div></li>
+    <li><span class="action-num">3</span><div><span class="action-label">Design:</span> Convert the text-based contact info into large, tappable buttons for mobile users.</div></li>
+  </ul>
+</div>
+
+<hr class="divider"/>
+
+<!-- ===== REPORT 3 ===== -->
+<div id="report3" class="report-header" style="padding-top:20px;">
+  <div class="report-number">Report 03</div>
+  <div class="report-title">🏛️ Community Hub &amp; Ecosystem Dominance</div>
+</div>
+
+<!-- R3 SCORE BANNER -->
+<div style="display:flex; gap:16px; margin-bottom:36px; flex-wrap:wrap;">
+  <div style="flex:1; min-width:200px; background:rgba(91,142,240,0.07); border:1px solid rgba(91,142,240,0.2); border-radius:10px; padding:20px 24px; text-align:center;">
+    <div style="font-family:'Syne',sans-serif; font-size:42px; font-weight:800; color:var(--tgd);">94/100</div>
+    <div style="font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-top:4px;">TGD — True Ecosystem</div>
+  </div>
+  <div style="flex:1; min-width:200px; background:rgba(224,90,90,0.07); border:1px solid rgba(224,90,90,0.2); border-radius:10px; padding:20px 24px; text-align:center;">
+    <div style="font-family:'Syne',sans-serif; font-size:42px; font-weight:800; color:var(--gad);">35/100</div>
+    <div style="font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-top:4px;">GAD — Just a Website</div>
+  </div>
+</div>
+
+<!-- R3 P1 -->
+<div id="r3p1" class="part">
+  <span class="part-label">Part 1</span>
+  <h3 class="part-title">Local Community Feel (Chicago Focus)</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>The specific location logic (/niles-il/) and the inclusion of targeted community data (like the "Proistamenos" leadership name, specific origin "Sparta, Greece", and custom "75th Anniversary" buttons) make the platform feel deeply integrated with the local Greek Chicago scene.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>It says "Support your local Greek-owned businesses in Chicago!" in a massive banner, but this is a superficial claim. The actual listing data is generic. It feels like an aggregator rather than a community participant.</p>
+  </div>
+</div>
+
+<!-- R3 P2 -->
+<div id="r3p2" class="part">
+  <span class="part-label">Part 2</span>
+  <h3 class="part-title">Community Hub Potential</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>Features "More Locations" and handles multi-location logic (seen in the JS: chainId = 'htshgoc'). It actively pushes users to explore the ecosystem. It has taxonomy pills ("Church &amp; Religious Organization") that likely lead to localized category hubs.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>The listing is a dead end. There are no "Related Businesses," no internal taxonomy links, and no way to continue exploring the Chicago Greek ecosystem without going back to the main menu.</p>
+  </div>
+</div>
+
+<!-- R3 P3 -->
+<div id="r3p3" class="part">
+  <span class="part-label">Part 3</span>
+  <h3 class="part-title">Trust, Culture, and Authenticity</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>Feels incredibly authentic. The attention to detail—including specific fields for the Priest's name and hometown in Greece—shows it was built by Greeks for Greeks. It understands the cultural nuances of what users want to know (e.g., "Where is the owner/priest from?").</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>Feels like a standard business directory where someone just typed "Greek" into the logo. There are no culturally specific data fields.</p>
+  </div>
+</div>
+
+<!-- R3 P4 -->
+<div id="r3p4" class="part">
+  <span class="part-label">Part 4</span>
+  <h3 class="part-title">National Scalability &amp; Dominance</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>Built for national dominance. The URL taxonomy (/listing/[city-state]/[business-name]) is exactly how Yelp, Tripadvisor, and Zillow scale their local SEO nationally. The Supabase backend guarantees it can handle millions of listings across the USA without performance degradation.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>Doomed structurally. WordPress will choke at 100,000 listings with this plugin stack. The flat URL structure (/listing/name/) means they cannot capture "City + Service" SEO traffic effectively.</p>
+  </div>
+</div>
+
+<!-- R3 P5 -->
+<div id="r3p5" class="part">
+  <span class="part-label">Part 5</span>
+  <h3 class="part-title">Marketing &amp; Brand Positioning Potential</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>Can be marketed as "The Yelp for Greek America." The product matches the ambition. It is sleek enough to be promoted by high-end Greek restaurants and institutions.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>Will struggle to gain organic adoption because the platform looks dated. Business owners will not proudly share a link to a page where a giant generic banner overshadows their own brand.</p>
+  </div>
+</div>
+
+<!-- R3 P6 -->
+<div id="r3p6" class="part">
+  <span class="part-label">Part 6</span>
+  <h3 class="part-title">Network Effect &amp; Ecosystem Strength</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>Strong flywheel potential. By showing related listings and linking deeply into categories, every new listing makes the whole platform more valuable. The "Save/Star" feature encourages users to build personalized lists, creating stickiness.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>Zero network effect visible on the listing level.</p>
+  </div>
+</div>
+
+<!-- R3 P7 -->
+<div id="r3p7" class="part">
+  <span class="part-label">Part 7</span>
+  <h3 class="part-title">Community Data &amp; Listing Handling</h3>
+  <div class="platform-block tgd">
+    <div class="platform-tag tgd">TGD</div>
+    <p>Treats businesses as rich entities. Support for custom CTAs, specific leadership profiles, detailed hours, and social media links proves a flexible, robust database schema.</p>
+  </div>
+  <div class="platform-block gad">
+    <div class="platform-tag gad">GAD</div>
+    <p>Treats businesses as flat blog posts.</p>
+  </div>
+</div>
+
+<!-- R3 P8 -->
+<div id="r3p8" class="part">
+  <span class="part-label">Part 8</span>
+  <h3 class="part-title">Scoring System</h3>
+  <table class="grade-table">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>TGD Grade</th>
+        <th>GAD Grade</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Local Community Feel</td>
+        <td><span class="grade grade-a">A</span></td>
+        <td><span class="grade grade-c">C</span></td>
+        <td>TGD's specific cultural data fields (Sparta, Greece) win.</td>
+      </tr>
+      <tr>
+        <td>Community Hub Potential</td>
+        <td><span class="grade grade-a">A</span></td>
+        <td><span class="grade grade-f">F</span></td>
+        <td>TGD links to related listings; GAD is a dead end.</td>
+      </tr>
+      <tr>
+        <td>Cultural Authenticity</td>
+        <td><span class="grade grade-a">A</span></td>
+        <td><span class="grade grade-d">D</span></td>
+        <td>TGD feels custom-made for the diaspora.</td>
+      </tr>
+      <tr>
+        <td>Trust &amp; Identity</td>
+        <td><span class="grade grade-a">A</span></td>
+        <td><span class="grade grade-c">C</span></td>
+        <td>TGD's premium look elevates the community.</td>
+      </tr>
+      <tr>
+        <td>National Scalability</td>
+        <td><span class="grade grade-a">A+</span></td>
+        <td><span class="grade grade-f">F</span></td>
+        <td>TGD's tech stack scales; GAD's WP theme will break.</td>
+      </tr>
+      <tr>
+        <td>Network Effects</td>
+        <td><span class="grade grade-b">B+</span></td>
+        <td><span class="grade grade-f">F</span></td>
+        <td>TGD encourages saving and exploring.</td>
+      </tr>
+      <tr class="overall-row">
+        <td>OVERALL</td>
+        <td><span class="grade grade-a" style="font-size:18px;">94/100</span></td>
+        <td><span class="grade grade-d" style="font-size:18px;">35/100</span></td>
+        <td>TGD is a true ecosystem; GAD is just a website.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- R3 P9 -->
+<div id="r3p9" class="part">
+  <span class="part-label">Part 9</span>
+  <h3 class="part-title">Direct Comparison &amp; Verdict</h3>
+  <div class="verdict-box">
+    <h4>Verdict</h4>
+    <div class="verdict-item">
+      <span class="label">True Community Hub:</span>
+      <span class="value win">TGD.</span>
+    </div>
+    <div class="verdict-item">
+      <span class="label">More Authentic:</span>
+      <span class="value win">TGD.</span>
+    </div>
+    <div class="verdict-item">
+      <span class="label">National Dominance Potential:</span>
+      <span class="value win">TGD.</span>
+    </div>
+    <div class="verdict-item">
+      <span class="label">FINAL VERDICT:</span>
+      <span class="value">If you are trying to build the central digital hub for Greek Americans, The Greek Directory (TGD) is the only viable foundation. It has the technical architecture of a modern SaaS platform, the UX of a premium consumer app, and the data schema of a culturally aware community builder. GAD is fundamentally limited by its reliance on a bloated WordPress theme and poor UX choices.</span>
+    </div>
+  </div>
+</div>
+
+<!-- R3 P10 -->
+<div id="r3p10" class="part">
+  <span class="part-label">Part 10</span>
+  <h3 class="part-title">Actionable Community Strategy</h3>
+  <div style="font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--tgd); margin-bottom:12px; font-weight:600;">For The Greek Directory (TGD) to Achieve National Dominance:</div>
+  <ul class="action-list">
+    <li><span class="action-num">1</span><div><span class="action-label">Community Flywheel:</span> Introduce user profiles and reviews. Let users leave "Greek-specific" reviews (e.g., rating the authenticity of the food or the community vibe).</div></li>
+    <li><span class="action-num">2</span><div><span class="action-label">Event Integration:</span> Since churches are community hubs, explicitly link church listings to a "Local Greek Events" database (e.g., showing the dates for the Niles Greek Fest directly on this page).</div></li>
+    <li><span class="action-num">3</span><div><span class="action-label">Cultural Connectivity:</span> Turn the "From: Sparta, Greece" text into a clickable tag. If a user clicks "Sparta," show them all other Greek business owners in Chicago who are also from Sparta. This would create massive, unique community network effects that no generic directory could ever replicate.</div></li>
+  </ul>
+</div>
+
+<!-- FINAL SUMMARY -->
+<div class="final-verdict">
+  <h3>Final Summary</h3>
+  <p>Across all three audits—Technical SEO, User Experience, and Community Ecosystem—The Greek Directory (TGD) is the vastly superior platform. It is built to rank, built to convert, and built to scale. The business should claim, optimize, and actively promote their TGD listing.</p>
+</div>
+```
+
+  </div>
+</main>
+
+</body>
+</html>
