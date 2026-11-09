@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Byzantine Chant Notation — Interactive Learning Guide</title>
+<style>
+:root{
+  --navy:#12345a;--blue:#1769aa;--gold:#c99a35;--ink:#182334;
+  --muted:#64748b;--paper:#fbfaf7;--card:#fff;--line:#dce3eb;
+  --green:#176b4d;--red:#a33131;--shadow:0 8px 24px rgba(18,52,90,.08)
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:linear-gradient(120deg,#102b4c,#1c5c91);color:white;padding:34px 20px}
+header .wrap,main,.footer{max-width:1100px;margin:auto}
+header h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.12;margin:0 0 12px}
+header p{max-width:800px;margin:0;color:#e7f1fa}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.badge{border:1px solid #ffffff55;border-radius:99px;padding:4px 11px;font-size:.85rem}
+main{padding:22px 16px 60px}
+.grid{display:grid;grid-template-columns:260px minmax(0,1fr);gap:20px;align-items:start}
+nav{position:sticky;top:12px;background:white;border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow)}
+nav h2{font-size:1rem;margin:0 0 8px}
+nav a{display:block;padding:7px 9px;border-radius:8px;color:var(--navy);text-decoration:none;font-size:.92rem}
+nav a:hover,nav a:focus{background:#eaf3fb}
+.content{min-width:0}
+section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(16px,3vw,26px);margin-bottom:18px;box-shadow:var(--shadow);scroll-margin-top:15px}
+h2{color:var(--navy);margin-top:0;font-size:1.55rem}
+h3{color:#204e78;margin:20px 0 8px}
+.small{font-size:.9rem;color:var(--muted)}
+.callout{background:#eef6fc;border-left:4px solid var(--blue);padding:12px 15px;border-radius:8px;margin:14px 0}
+.warning{background:#fff8e7;border-left-color:var(--gold)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button,select,input{font:inherit}
+button{border:0;border-radius:9px;background:var(--blue);color:white;padding:10px 15px;cursor:pointer}
+button:hover{filter:brightness(.94)}
+button.secondary{background:#e7eef5;color:var(--navy)}
+button.gold{background:#9b6c13}
+button:disabled{opacity:.45;cursor:not-allowed}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}
+.symbol{font-family:"Noto Serif",serif;font-size:2.4rem;color:var(--navy);line-height:1.2}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px;text-align:left;vertical-align:top}
+th{background:#edf4fa;color:var(--navy)}
+.table-wrap{overflow-x:auto}
+.note-svg{width:100%;height:auto;max-width:700px;display:block;margin:10px auto}
+input[type=range]{width:min(300px,100%)}
+select{border:1px solid var(--line);padding:8px;border-radius:8px;background:white}
+.quiz-question{padding:15px;border:1px solid var(--line);border-radius:10px;margin:12px 0}
+.quiz-question p{font-weight:650;margin-top:0}
+.quiz-question label{display:block;padding:5px 0;cursor:pointer}
+.feedback{font-weight:650;margin-top:8px}
+.good{color:var(--green)}.bad{color:var(--red)}
+.progress{height:9px;background:#e4eaf0;border-radius:99px;overflow:hidden;margin:12px 0}
+.progress div{height:100%;background:var(--gold);width:0%;transition:width .2s}
+footer{color:var(--muted);font-size:.9rem;padding:20px}
+details{border:1px solid var(--line);border-radius:9px;padding:10px 13px;margin:10px 0}
+summary{cursor:pointer;font-weight:650}
+.source-list li{margin:8px 0}
+@media(max-width:800px){.grid{grid-template-columns:1fr}nav{position:static}nav .navlinks{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <h1>Byzantine Chant Notation</h1>
+  <p>An interactive learning guide to the notation used in Greek Orthodox ecclesiastical chant: its history, signs, melodic movement, rhythm, modes, and practical reading.</p>
+  <div class="badges"><span class="badge">Beginner → Intermediate</span><span class="badge">Audio demonstrations</span><span class="badge">Practice & quiz</span><span class="badge">Orthodox chant tradition</span></div>
+ </div>
+</header>
+<main>
+<div class="grid">
+<nav aria-label="Course contents">
+ <h2>Course contents</h2>
+ <div class="navlinks">
+  <a href="#overview">1. Orientation</a><a href="#history">2. History</a><a href="#principles">3. How notation works</a>
+  <a href="#signs">4. Signs & symbols</a><a href="#pitch">5. Pitch & audio</a><a href="#rhythm">6. Rhythm</a>
+  <a href="#modes">7. The eight modes</a><a href="#reading">8. Reading practice</a><a href="#quiz">9. Quiz</a><a href="#references">10. Sources</a>
+ </div>
+ <div class="progress" aria-label="Course progress"><div id="progressBar"></div></div>
+ <p class="small" id="progressText">0 of 9 sections visited</p>
+</nav>
+<div class="content">
+<section id="overview">
+<h2>1. Orientation: what are you learning?</h2>
+<p><strong>Byzantine notation</strong> is the traditional neumatic system used to write the melodies of Byzantine and Greek Orthodox chant. It is not simply a set of notes on a five-line Western staff: its signs describe melodic movement, duration, and other musical features within a chant tradition.</p>
+<div class="callout"><strong>Important:</strong> Byzantine notation is best learned together with a teacher, sung examples, and the oral tradition. The symbols are not a substitute for listening to how a phrase is traditionally performed.</div>
+<div class="cards">
+ <div class="card"><h3>Melody</h3><p>Signs show movement from one pitch to another.</p></div>
+ <div class="card"><h3>Time</h3><p>Rhythmic signs and the chant’s syllables shape duration.</p></div>
+ <div class="card"><h3>Tradition</h3><p>Mode, phrase, and style influence how the written music is interpreted.</p></div>
+</div>
+<h3>Learning goals</h3>
+<ul><li>Explain the historical development of the modern notation system.</li><li>Recognize basic pitch and time signs.</li><li>Understand the role of the ison and the eight modes.</li><li>Read a simple movement sequence and test your understanding.</li></ul>
+</section>
+
+<section id="history">
+<h2>2. A brief history</h2>
+<p>Byzantine chant developed over centuries in the worship of the Eastern Christian Church. Its notation evolved from earlier neumatic systems, which used signs above text to guide singers.</p>
+<svg class="note-svg" viewBox="0 0 720 160" role="img" aria-label="Timeline from early neumes to the 1814 reform and modern printed notation">
+ <line x1="55" y1="78" x2="665" y2="78" stroke="#8ba5bd" stroke-width="4"/>
+ <g fill="#1769aa"><circle cx="90" cy="78" r="9"/><circle cx="300" cy="78" r="9"/><circle cx="510" cy="78" r="9"/><circle cx="650" cy="78" r="9"/></g>
+ <g font-size="14" fill="#182334" text-anchor="middle"><text x="90" y="35">Early neumes</text><text x="300" y="35">Medieval notation</text><text x="510" y="35">1814 reform</text><text x="650" y="35">Modern practice</text><text x="90" y="112">Melodic cues</text><text x="300" y="112">Notation grows</text><text x="510" y="112">New Method</text><text x="650" y="112">Printed scores</text></g>
+</svg>
+<ul>
+<li><strong>Early period:</strong> melodic signs develop to help preserve and transmit chant.</li>
+<li><strong>Medieval period:</strong> notation becomes more elaborate and specialized.</li>
+<li><strong>1814:</strong> the “New Method” reform is associated especially with Chrysanthos of Madytos, Gregory the Protopsaltes, and Chourmouzios the Archivist.</li>
+<li><strong>Today:</strong> modern Byzantine notation is used in printed chant books, teaching, and church services across Orthodox communities.</li>
+</ul>
+<div class="callout warning"><strong>Historical nuance:</strong> The 1814 reform did not invent Byzantine chant. It reorganized and made the notation more accessible in a new system.</div>
+</section>
+
+<section id="principles">
+<h2>3. How the notation works</h2>
+<p>Byzantine notation is <strong>relative</strong>: signs usually describe movement from the current pitch rather than assigning each sign an absolute pitch name such as C or D.</p>
+<div class="cards">
+ <div class="card"><h3>Melodic signs</h3><p>Indicate upward, downward, or repeated/held movement according to the sign and context.</p></div>
+ <div class="card"><h3>Martyria</h3><p>Markers that identify pitch or mode at important points in the music.</p></div>
+ <div class="card"><h3>Text</h3><p>The chant syllables are placed under or alongside the musical signs.</p></div>
+</div>
+<h3>Compare the systems</h3>
+<div class="table-wrap"><table><thead><tr><th>Western staff notation</th><th>Byzantine notation</th></tr></thead><tbody>
+<tr><td>Five-line staff and noteheads</td><td>Neumes and melodic signs</td></tr><tr><td>Often gives absolute pitch with clef and key signature</td><td>Often indicates relative melodic movement and modal context</td></tr><tr><td>Pitch and duration are represented by note shapes/positions</td><td>Pitch movement and duration use distinct signs and conventions</td></tr><tr><td>Instrumental and vocal repertoire</td><td>Especially associated with chant and its oral performance tradition</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="signs">
+<h2>4. Basic signs and symbols</h2>
+<p>The following are introductory descriptions. A sign’s exact interpretation depends on the notation tradition, mode, and surrounding signs. Learn the signs from a reliable score and teacher.</p>
+<div class="cards">
+ <div class="card"><div class="symbol">ἴσον</div><h3>Isos / Ison</h3><p>Commonly associated with remaining on the same pitch or repeating it in a basic movement exercise.</p></div>
+ <div class="card"><div class="symbol">↑</div><h3>Anabasis (upward movement)</h3><p>A helpful concept for ascending melodic motion. The actual neume is not simply a modern arrow.</p></div>
+ <div class="card"><div class="symbol">↓</div><h3>Katabasis (downward movement)</h3><p>A helpful concept for descending melodic motion. The actual sign and interval depend on the notation.</p></div>
+ <div class="card"><div class="symbol">⏤</div><h3>Chronos / duration</h3><p>Time-related signs affect how long a syllable or melodic event is held.</p></div>
+</div>
+<h3>Common terminology</h3>
+<ul><li><strong>Neume:</strong> a notation sign.</li><li><strong>Fthora:</strong> a sign that alters or clarifies the melodic scale/pitch context.</li><li><strong>Martyria:</strong> a witness/indication sign, often giving pitch or mode information.</li><li><strong>Ison:</strong> a sustained supporting pitch sung beneath the melody.</li><li><strong>Melisma:</strong> several notes sung on one syllable.</li></ul>
+<div class="callout">The symbols above are conceptual aids, not a complete chart of authentic neumes. Byzantine signs should be learned from actual notation fonts and scores.</div>
+</section>
+
+<section id="pitch">
+<h2>5. Pitch movement & audio lab</h2>
+<p>This audio tool creates a simple pitch demonstration using the browser’s Web Audio API. It is a modern synthesized tone—not an authentic chant recording—and is intended only to help hear ascending, descending, and repeated pitch.</p>
+<div class="card">
+ <div class="row"><label for="basePitch">Starting pitch: <strong id="pitchLabel">D4 (293.7 Hz)</strong></label></div>
+ <input id="basePitch" type="range" min="220" max="440" value="293.66" step="0.1" aria-label="Starting frequency">
+ <div class="row"><button id="playUp">Play ascending</button><button id="playDown">Play descending</button><button id="playSame">Play repeated pitch</button><button id="stopAudio" class="secondary">Stop</button></div>
+ <p class="small" id="audioStatus" aria-live="polite">Audio will begin after you press a button.</p>
+</div>
+<h3>Listen and identify</h3>
+<p>Which pattern did you hear?</p>
+<div class="row"><button class="secondary" data-audio-answer="up">Ascending</button><button class="secondary" data-audio-answer="down">Descending</button><button class="secondary" data-audio-answer="same">Repeated pitch</button></div>
+<p id="audioAnswer" class="feedback" aria-live="polite"></p>
+</section>
+
+<section id="rhythm">
+<h2>6. Rhythm and duration</h2>
+<p>Chant rhythm is connected to syllables, melodic signs, and the conventions of a particular chant. It should not be reduced to a simple Western meter in every case.</p>
+<div class="callout"><strong>Try clapping:</strong> speak “Κύ-ρι-ε ἐ-λέ-η-σον” slowly and evenly. Then lengthen the syllables where the melody calls for it. This is a basic syllable exercise, not a prescribed liturgical performance.</div>
+<h3>Duration exercise</h3>
+<p>Tap the beats below. The example uses a simple training pulse of 60 BPM.</p>
+<div class="row"><label for="tempo">Tempo: <span id="tempoLabel">60</span> BPM</label><input id="tempo" type="range" min="40" max="120" value="60"></div>
+<div class="row"><button id="startPulse">Start pulse</button><button id="stopPulse" class="secondary">Stop pulse</button></div>
+<div id="pulseBeat" style="font-size:2rem;color:var(--gold);font-weight:800" aria-live="polite">●</div>
+<p class="small">The pulse is a practice aid, not a claim that all Byzantine chant follows a fixed beat.</p>
+</section>
+
+<section id="modes">
+<h2>7. The eight modes (Octoechos)</h2>
+<p>The <strong>Octoechos</strong> organizes much of the Orthodox hymnographic tradition around eight modes. Each mode has characteristic melodic patterns, tonal relationships, and formulas. The modes are not simply identical to the eight modern Western major/minor keys.</p>
+<div class="table-wrap"><table><thead><tr><th>Mode</th><th>Greek name</th><th>Introductory note</th></tr></thead><tbody>
+<tr><td>1</td><td>Πρώτος (First)</td><td>One of the principal modes, with its own melodic formulas.</td></tr>
+<tr><td>2</td><td>Δεύτερος (Second)</td><td>Distinct modal character and melodic vocabulary.</td></tr>
+<tr><td>3</td><td>Τρίτος (Third)</td><td>Uses its own characteristic intervals and phrases.</td></tr>
+<tr><td>4</td><td>Τέταρτος (Fourth)</td><td>Has recognizable melodic formulae and cadence patterns.</td></tr>
+<tr><td>5</td><td>Πλάγιος του πρώτου (Plagal First)</td><td>Related to First Mode within the modal system.</td></tr>
+<tr><td>6</td><td>Πλάγιος του δευτέρου (Plagal Second)</td><td>Related to Second Mode.</td></tr>
+<tr><td>7</td><td>Βαρύς (Varys / Grave)</td><td>A distinctive mode, often treated separately in modal explanations.</td></tr>
+<tr><td>8</td><td>Πλάγιος του τετάρτου (Plagal Fourth)</td><td>Related to Fourth Mode.</td></tr>
+</tbody></table></div>
+<h3>Check your understanding</h3>
+<p>Why is it misleading to say “Mode 1 is just a Western major key”?</p>
+<button class="secondary" id="showModeAnswer">Reveal answer</button><p id="modeAnswer" hidden>Because Byzantine modes are defined by their own intervallic, melodic, and cadence traditions; they are not merely major/minor keys with different labels.</p>
+</section>
+
+<section id="reading">
+<h2>8. Reading practice: a movement sequence</h2>
+<p>This is a <strong>simplified teaching exercise</strong>, not a passage copied from a liturgical score. Treat each step as relative movement from the previous pitch.</p>
+<div class="card">
+ <p><strong>Sequence:</strong> start → up → up → same → down → down</p>
+ <svg class="note-svg" viewBox="0 0 650 170" role="img" aria-label="A line showing a simple ascending then descending pitch contour">
+ <polyline points="55,125 160,95 265,65 370,65 475,95 580,125" fill="none" stroke="#1769aa" stroke-width="4"/>
+ <g fill="#c99a35"><circle cx="55" cy="125" r="7"/><circle cx="160" cy="95" r="7"/><circle cx="265" cy="65" r="7"/><circle cx="370" cy="65" r="7"/><circle cx="475" cy="95" r="7"/><circle cx="580" cy="125" r="7"/></g>
+ <g font-size="13" fill="#182334" text-anchor="middle"><text x="55" y="151">Start</text><text x="160" y="120">Up</text><text x="265" y="48">Up</text><text x="370" y="48">Same</text><text x="475" y="120">Down</text><text x="580" y="151">Down</text></g></svg>
+ <label for="movementSelect"><strong>Which description matches this contour?</strong></label><br>
+ <select id="movementSelect"><option value="">Choose…</option><option value="a">Only descending</option><option value="b">Ascending, repeated, then descending</option><option value="c">Repeated pitch throughout</option></select>
+ <button id="checkMovement">Check</button><p id="movementFeedback" class="feedback"></p>
+</div>
+<h3>Practice questions</h3>
+<ol>
+<li>What does “relative pitch movement” mean in this lesson?</li>
+<li>What is the ison used for in a chant performance?</li>
+<li>Why should a student listen to a chant while studying its notation?</li>
+</ol>
+<details><summary>Suggested answers</summary><ol><li>Signs often show movement from the current pitch rather than a fixed Western note name.</li><li>It provides a supporting drone or sustained pitch beneath the melody.</li><li>Because notation is interpreted within a musical and oral tradition, including modal formulas and style.</li></ol></details>
+</section>
+
+<section id="quiz">
+<h2>9. Knowledge check</h2>
+<p>Choose one answer for each question, then submit to see your score and feedback.</p>
+<form id="quizForm">
+<div class="quiz-question"><p>1. Byzantine notation is primarily associated with…</p><label><input type="radio" name="q1" value="a"> Western orchestral scores</label><label><input type="radio" name="q1" value="b"> Byzantine and Greek Orthodox chant</label><label><input type="radio" name="q1" value="c"> Guitar tablature</label><div class="feedback" id="f1"></div></div>
+<div class="quiz-question"><p>2. The 1814 New Method reform is associated with…</p><label><input type="radio" name="q2" value="a"> Chrysanthos, Gregory the Protopsaltes, and Chourmouzios</label><label><input type="radio" name="q2" value="b"> Beethoven and Mozart</label><label><input type="radio" name="q2" value="c"> The invention of the five-line staff</label><div class="feedback" id="f2"></div></div>
+<div class="quiz-question"><p>3. The ison generally provides…</p><label><input type="radio" name="q3" value="a"> A supporting pitch/drone</label><label><input type="radio" name="q3" value="b"> The words of the hymn</label><label><input type="radio" name="q3" value="c"> A change of tempo</label><div class="feedback" id="f3"></div></div>
+<div class="quiz-question"><p>4. Byzantine modes are…</p><label><input type="radio" name="q4" value="a"> Exactly the same as Western major/minor keys</label><label><input type="radio" name="q4" value="b"> A modal system with characteristic intervals and melodic formulas</label><label><input type="radio" name="q4" value="c"> Only eight different tempos</label><div class="feedback" id="f4"></div></div>
+<div class="quiz-question"><p>5. A melisma means…</p><label><input type="radio" name="q5" value="a"> Several notes sung on one syllable</label><label><input type="radio" name="q5" value="b"> A pause between verses</label><label><input type="radio" name="q5" value="c"> A printed book of hymns</label><div class="feedback" id="f5"></div></div>
+<div class="quiz-question"><p>6. What is the best way to learn Byzantine notation?</p><label><input type="radio" name="q6" value="a"> Memorize symbols without listening</label><label><input type="radio" name="q6" value="b"> Combine notation, listening, practice, and instruction</label><label><input type="radio" name="q6" value="c"> Ignore modal context</label><div class="feedback" id="f6"></div></div>
+<button type="submit">Submit quiz</button><button type="button" class="secondary" id="resetQuiz">Reset quiz</button>
+</form>
+<div id="quizResult" class="callout" aria-live="polite" hidden></div>
+</section>
+
+<section id="references">
+<h2>10. Research references & further study</h2>
+<p>This guide is an introductory learning aid, not a substitute for a full notation manual, chant book, or instructor. For more detailed notation and historical context, consult:</p>
+<ul class="source-list">
+<li><a href="https://sbm.goarch.org/a-brief-survey-of-the-history-of-byzantine-and-post-byzantine-chant/" target="_blank" rel="noopener">Greek Orthodox Archdiocese — A Brief Survey of the History of Byzantine and Post-Byzantine Chant</a></li>
+<li><a href="https://antiochianprodsa.blob.core.windows.net/websiteattachments/BOS%20AH%20BN%20Intro.pdf" target="_blank" rel="noopener">Antiochian Orthodox — Introduction to Byzantine Notation (PDF)</a></li>
+<li><a href="https://www.churchmusic.goarch.org/publications/availablemusic/chant" target="_blank" rel="noopener">GOARCH Church Music — Chant publications and resources</a></li>
+<li><a href="https://www.apostoliki-diakonia.gr/" target="_blank" rel="noopener">Apostoliki Diakonia of the Church of Greece</a></li>
+<li><a href="https://www.byzantinechant.org/" target="_blank" rel="noopener">ByzantineChant.org — educational material and exercises</a></li>
+</ul>
+<div class="callout warning"><strong>Accuracy note:</strong> This course intentionally avoids pretending that every neume has a simple one-symbol/one-note translation. Advanced interpretation can depend on mode, context, and the specific edition or teaching tradition.</div>
+</section>
+</div></div>
+<footer class="footer">Interactive Byzantine Chant Notation learning guide · Runs locally in your browser · Audio is synthesized locally; no microphone or internet access is required for the exercises.</footer>
+</main>
+<script>
+(function(){
+"use strict";
+const visited=new Set();
+document.querySelectorAll("nav a").forEach(a=>a.addEventListener("click",()=>{
+ const id=a.getAttribute("href").slice(1);visited.add(id);updateProgress();
+}));
+function updateProgress(){const n=Math.min(visited.size,9);document.getElementById("progressBar").style.width=(n/9*100)+"%";document.getElementById("progressText").textContent=n+" of 9 sections visited";}
+const slider=document.getElementById("basePitch"),pitchLabel=document.getElementById("pitchLabel");
+function noteName(freq){const names=["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"];let midi=Math.round(69+12*Math.log2(freq/440));return names[(midi%12+12)%12]+Math.floor(midi/12-1)+" ("+Number(freq).toFixed(1)+" Hz)";}
+slider.addEventListener("input",()=>pitchLabel.textContent=noteName(+slider.value));
+let audioCtx=null,activeOsc=[];
+function stopAudio(){activeOsc.forEach(o=>{try{o.stop()}catch(e){}});activeOsc=[];document.getElementById("audioStatus").textContent="Stopped.";}
+function playPattern(pattern){
+ stopAudio();
+ const AC=window.AudioContext||window.webkitAudioContext;
+ if(!AC){document.getElementById("audioStatus").textContent="Web Audio is not supported in this browser.";return;}
+ audioCtx=audioCtx||new AC();audioCtx.resume();
+ const base=+slider.value,now=audioCtx.currentTime;
+ pattern.forEach((ratio,i)=>{
+  const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+  osc.type="sine";osc.frequency.value=base*ratio;
+  gain.gain.setValueAtTime(0.0001,now+i*.48);
+  gain.gain.exponentialRampToValueAtTime(.14,now+i*.48+.03);
+  gain.gain.setValueAtTime(.14,now+i*.48+.32);
+  gain.gain.exponentialRampToValueAtTime(.0001,now+i*.48+.43);
+  osc.connect(gain);gain.connect(audioCtx.destination);osc.start(now+i*.48);osc.stop(now+i*.48+.45);activeOsc.push(osc);
+ });
+ document.getElementById("audioStatus").textContent="Playing a synthesized pitch pattern.";
+}
+document.getElementById("playUp").addEventListener("click",()=>{playPattern([1,1.12,1.26,1.41]);lastPattern="up";});
+document.getElementById("playDown").addEventListener("click",()=>{playPattern([1.41,1.26,1.12,1]);lastPattern="down";});
+document.getElementById("playSame").addEventListener("click",()=>{playPattern([1,1,1,1]);lastPattern="same";});
+document.getElementById("stopAudio").addEventListener("click",stopAudio);
+let lastPattern="up";
+document.querySelectorAll("[data-audio-answer]").forEach(b=>b.addEventListener("click",()=>{
+ const ans=b.dataset.audioAnswer;const out=document.getElementById("audioAnswer");
+ out.textContent=ans===lastPattern?"Correct — that matches the last pattern played.":"Not quite. Play a pattern again, then select the matching movement.";
+ out.className="feedback "+(ans===lastPattern?"good":"bad");
+}));
+let pulseTimer=null,pulseCtx=null;
+const tempo=document.getElementById("tempo");
+tempo.addEventListener("input",()=>document.getElementById("tempoLabel").textContent=tempo.value);
+function pulse(){const el=document.getElementById("pulseBeat");el.textContent="●";setTimeout(()=>el.textContent="○",120);}
+document.getElementById("startPulse").addEventListener("click",()=>{
+ if(pulseTimer)clearInterval(pulseTimer);pulse();pulseTimer=setInterval(pulse,60000/+tempo.value);
+});
+document.getElementById("stopPulse").addEventListener("click",()=>{clearInterval(pulseTimer);pulseTimer=null;document.getElementById("pulseBeat").textContent="●";});
+document.getElementById("showModeAnswer").addEventListener("click",()=>{document.getElementById("modeAnswer").hidden=false;});
+document.getElementById("checkMovement").addEventListener("click",()=>{
+ const v=document.getElementById("movementSelect").value,el=document.getElementById("movementFeedback");
+ el.textContent=v==="b"?"Correct: it rises, repeats the same pitch, then descends.":"Try again: trace the line from left to right.";
+ el.className="feedback "+(v==="b"?"good":"bad");
+});
+const answers={q1:"b",q2:"a",q3:"a",q4:"b",q5:"a",q6:"b"};
+const explanations={
+ q1:"Byzantine notation is associated with Byzantine and Greek Orthodox chant.",
+ q2:"The New Method reform is associated with Chrysanthos, Gregory the Protopsaltes, and Chourmouzios.",
+ q3:"The ison commonly provides a supporting pitch or drone.",
+ q4:"Modes have their own intervallic, melodic, and cadence traditions.",
+ q5:"A melisma is several notes sung on one syllable.",
+ q6:"Notation, listening, practice, and instruction work together."
+};
+document.getElementById("quizForm").addEventListener("submit",e=>{
+ e.preventDefault();let score=0;
+ Object.keys(answers).forEach(q=>{
+  const selected=document.querySelector('input[name="'+q+'"]:checked');
+  const correct=selected&&selected.value===answers[q];if(correct)score++;
+  const f=document.getElementById("f"+q.slice(1));f.textContent=(correct?"Correct. ":"Incorrect. ")+explanations[q];f.className="feedback "+(correct?"good":"bad");
+ });
+ const result=document.getElementById("quizResult");result.hidden=false;
+ result.innerHTML="<strong>Score: "+score+" / 6 ("+Math.round(score/6*100)+"%)</strong><br>"+(score===6?"Excellent — you have mastered the introductory concepts.":score>=4?"Good work. Review the explanations for any missed questions.":"Review the sections above and try again.");
+});
+document.getElementById("resetQuiz").addEventListener("click",()=>{
+ document.getElementById("quizForm").reset();document.querySelectorAll("#quizForm .feedback").forEach(f=>{f.textContent="";f.className="feedback";});
+ document.getElementById("quizResult").hidden=true;
+});
+})();
+</script>
+</body>
+</html>
